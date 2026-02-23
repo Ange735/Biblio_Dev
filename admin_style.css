@@ -1,0 +1,38 @@
+:root{
+  --accent:#3753c0;
+  --accent-2:#00c6ff;
+  --bg:#f4f7fb;
+  --card:#fff;
+  --danger:#e05353;
+}
+*{box-sizing:border-box;font-family:Inter, Poppins, Arial; }
+body{margin:0;background:var(--bg);color:#222}
+.admin-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white}
+.admin-header h1{margin:0;font-size:18px}
+.header-actions button{margin-left:8px;padding:8px 12px;border-radius:8px;border:none;background:white;color:var(--accent);cursor:pointer}
+.admin-main{display:flex;gap:18px;padding:18px}
+.sidebar{width:220px;background:var(--card);border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+.sidebar ul{list-style:none;padding:0;margin:0}
+.sidebar li{margin:8px 0}
+.menu-link{color:#333;text-decoration:none;display:block;padding:8px;border-radius:6px}
+.menu-link.active, .menu-link:hover{background:linear-gradient(90deg,#eaf1ff,#f0fbff)}
+.panel{flex:1;background:var(--card);border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,0.06);min-height:500px}
+#Books{flex:1;background:var(--card);border-radius:10px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,0.06);min-height:500px}
+.table{width:100%;border-collapse:collapse;margin-top:12px}
+.table th,.table td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+.table thead th{font-weight:600}
+.table button{padding:6px 8px;border-radius:6px;border:none;cursor:pointer}
+.table .btn-edit{background:#ffd966}
+.table .btn-delete{background:var(--danger);color:white}
+.table .btn-validate{background:#3bb54a;color:white}
+.table .btn-warn{background:#ff9900;color:white}
+input[type="text"], input[type="search"], select, textarea{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;margin:8px 0}
+.alerts-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.alerts-actions input#alertText{flex:1}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:999}
+.modal-content{width:480px;background:var(--card);padding:16px;border-radius:10px}
+.modal-content label{display:block;margin:8px 0;font-size:13px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.close-modal{background:#ddd;border:none;padding:8px;border-radius:6px;cursor:pointer}
+.toast{position:fixed;right:20px;bottom:20px;background:#333;color:white;padding:10px 14px;border-radius:8px;display:none}
+

@@ -1,0 +1,209 @@
+/* =========================
+   VARIABLES & THEME
+========================= */
+:root {
+  --blue-main: #2563eb;
+  --blue-soft: #3b82f6;
+  --blue-dark: #1e3a8a;
+  --blue-glow: rgba(37, 99, 235, 0.45);
+  --bg-light: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --radius: 18px;
+}
+
+/* =========================
+   RESET
+========================= */
+* {
+  box-sizing: border-box;
+  font-family: "Inter", "Poppins", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, #3b82f6, transparent 40%),
+    radial-gradient(circle at bottom right, #1e40af, transparent 45%),
+    linear-gradient(135deg, #1e3a8a, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* =========================
+   BACKGROUND ANIMATION
+========================= */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(255,255,255,0.05), transparent 60%);
+  animation: bgMove 12s infinite linear;
+}
+
+@keyframes bgMove {
+  from { transform: translateX(-10%); }
+  to { transform: translateX(10%); }
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  padding: 20px;
+  z-index: 2;
+}
+
+/* =========================
+   TITRE PRINCIPAL
+========================= */
+.container h1 {
+  text-align: center;
+  color: white;
+  font-size: 28px;
+  margin-bottom: 24px;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.35);
+}
+
+/* =========================
+   CARD LOGIN (GLASS)
+========================= */
+.form-box {
+  background: var(--card-bg);
+  backdrop-filter: blur(14px);
+  border-radius: var(--radius);
+  padding: 34px;
+  box-shadow:
+    0 35px 80px rgba(0,0,0,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.4);
+  animation: cardPop 0.6s ease;
+}
+
+@keyframes cardPop {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================
+   TITRE FORM
+========================= */
+.form h2 {
+  text-align: center;
+  margin: 0 0 22px;
+  font-size: 20px;
+  color: var(--blue-dark);
+  font-weight: 600;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.form input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: #f1f5f9;
+  font-size: 14px;
+  color: var(--text-main);
+  transition: all 0.3s ease;
+}
+
+.form input::placeholder {
+  color: var(--text-muted);
+}
+
+.form input:focus {
+  outline: none;
+  border-color: var(--blue-main);
+  background: white;
+  box-shadow:
+    0 0 0 4px var(--blue-glow);
+}
+
+/* =========================
+   BOUTON
+========================= */
+.form button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue-main), var(--blue-soft));
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  transition: all 0.35s ease;
+  box-shadow:
+    0 15px 35px var(--blue-glow);
+}
+
+.form button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 25px 50px var(--blue-glow);
+}
+
+/* =========================
+   LIEN ETUDIANT
+========================= */
+.form p {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.form a {
+  color: var(--blue-main);
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+}
+
+.form a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue-main), var(--blue-soft));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.form a:hover::after {
+  transform: scaleX(1);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 480px) {
+  .form-box {
+    padding: 26px;
+  }
+
+  .container h1 {
+    font-size: 23px;
+  }
+}

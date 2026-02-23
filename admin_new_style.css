@@ -1,0 +1,2269 @@
+/* Styles pour la section Étudiants */
+#panelStudents {
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#panelStudents h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 26px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+/* Formulaire de recherche */
+#panelStudents form {
+  margin-bottom: 25px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#panelStudents form input[type="text"] {
+  flex: 1;
+  min-width: 300px;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+#panelStudents form input[type="text"]:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+#panelStudents form button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#panelStudents form button[name="rechercher"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+#panelStudents form button[name="rechercher"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#panelStudents form button[name="annuler"] {
+  background: #6c757d;
+  color: white;
+}
+
+#panelStudents form button[name="annuler"]:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
+
+/* Styles du tableau des étudiants */
+#studentsTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+#studentsTable thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+#studentsTable th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+#studentsTable tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+#studentsTable tbody tr:hover {
+  background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+  transform: scale(1.005);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+#studentsTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+#studentsTable td {
+  padding: 14px 12px;
+  color: #495057;
+  vertical-align: middle;
+}
+
+/* Colonne ID */
+#studentsTable td:nth-child(1) {
+  font-weight: 600;
+  color: #3498db;
+  font-family: 'Courier New', monospace;
+}
+
+/* Colonnes Nom et Prénom */
+#studentsTable td:nth-child(2),
+#studentsTable td:nth-child(3) {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* Colonne Email */
+#studentsTable td:nth-child(4) {
+  color: #7f8c8d;
+  font-size: 13px;
+}
+
+#studentsTable td:nth-child(4)::before {
+  content: '📧 ';
+  margin-right: 4px;
+}
+
+/* Colonne Pénalités avec badge */
+#studentsTable td:nth-child(5) {
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+#studentsTable tbody tr td:nth-child(5) {
+  color: #6c757d;
+}
+
+/* Si pénalités > 0, afficher en orange */
+#studentsTable tbody tr:has(td:nth-child(5):not(:empty)) td:nth-child(5) {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+  color: #856404;
+  border-radius: 6px;
+  padding: 8px;
+  font-weight: 700;
+}
+
+/* Colonne Statut */
+#studentsTable td:nth-child(6) {
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Badge pour le statut */
+#studentsTable td:nth-child(6)::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* Statut actif (1) = vert */
+#studentsTable tbody tr td:nth-child(6) {
+  color: #28a745;
+}
+
+#studentsTable tbody tr td:nth-child(6)::before {
+  background-color: #28a745;
+}
+
+/* Colonne Password */
+#studentsTable td:nth-child(7) {
+  font-family: 'Courier New', monospace;
+  color: #6c757d;
+  font-size: 12px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Colonne Actions */
+#studentsTable td:nth-child(8) {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Boutons d'action */
+#studentsTable button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0 3px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+#studentsTable button:hover {
+  transform: translateY(-2px) scale(1.1);
+}
+
+/* Bouton Pénaliser */
+#studentsTable .btn-penalize {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  box-shadow: 0 2px 5px rgba(255, 193, 7, 0.3);
+}
+
+#studentsTable .btn-penalize:hover {
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.5);
+}
+
+/* Bouton Réduire/Réinitialiser */
+#studentsTable .btn-reset {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  box-shadow: 0 2px 5px rgba(23, 162, 184, 0.3);
+}
+
+#studentsTable .btn-reset:hover {
+  box-shadow: 0 5px 15px rgba(23, 162, 184, 0.5);
+}
+
+/* Bouton Supprimer */
+#studentsTable button[name="supp"] {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+}
+
+#studentsTable button[name="supp"]:hover {
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
+}
+
+/* Bouton Message */
+#studentsTable button[name="ouvrir_modal_mess"] {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  box-shadow: 0 2px 5px rgba(155, 89, 182, 0.3);
+}
+
+#studentsTable button[name="ouvrir_modal_mess"]:hover {
+  box-shadow: 0 5px 15px rgba(155, 89, 182, 0.5);
+}
+
+/* Message "Aucun étudiant" */
+#studentsTable td[colspan] {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 40px;
+  font-size: 16px;
+  background: #f8f9fa;
+}
+
+#studentsTable td[colspan]::before {
+  content: '👥 ';
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Styles pour le modal étudiant */
+#modalStudent .modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  max-width: 500px;
+  width: 90%;
+}
+
+#modalStudent h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 22px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+#modalStudent input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+#modalStudent input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+#modalStudent .modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#modalStudent .modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#modalStudent button[name="inscr"] {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+#modalStudent button[name="inscr"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+#modalStudent button[name="modif"] {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: white;
+}
+
+#modalStudent button[name="modif"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+}
+
+#modalStudent .close-modal {
+  background: #6c757d;
+  color: white;
+}
+
+#modalStudent .close-modal:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  #studentsTable {
+    font-size: 12px;
+  }
+  
+  #studentsTable th,
+  #studentsTable td {
+    padding: 10px 8px;
+  }
+  
+  #studentsTable button {
+    font-size: 16px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  #panelStudents form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  #panelStudents form input[type="text"] {
+    min-width: 100%;
+  }
+  
+  #panelStudents form button {
+    width: 100%;
+  }
+  
+  #studentsTable {
+    font-size: 11px;
+  }
+  
+  #studentsTable th,
+  #studentsTable td {
+    padding: 8px 5px;
+  }
+  
+  #studentsTable td:nth-child(4)::before {
+    display: none;
+  }
+  
+  #studentsTable button {
+    font-size: 14px;
+    margin: 0 2px;
+    padding: 4px 6px;
+  }
+}
+
+/* Styles pour la section Livres */
+#Books {
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#Books h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 26px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+/* Formulaire de recherche */
+#Books form {
+  margin-bottom: 25px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#Books form input[type="text"] {
+  flex: 1;
+  min-width: 300px;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+#Books form input[type="text"]:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+#Books form button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#Books form button[name="rechercher_b"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+#Books form button[name="rechercher_b"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#Books form button[name="annuler_b"] {
+  background: #6c757d;
+  color: white;
+}
+
+#Books form button[name="annuler_b"]:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
+
+/* Styles du tableau des livres */
+#booksTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+#booksTable thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+#booksTable th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+#booksTable tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+#booksTable tbody tr:hover {
+  background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+  transform: scale(1.005);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+#booksTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+#booksTable td {
+  padding: 14px 12px;
+  color: #495057;
+  vertical-align: middle;
+}
+
+/* Colonnes spécifiques */
+#booksTable td:nth-child(1) {
+  font-weight: 600;
+  color: #3498db;
+  font-family: 'Courier New', monospace;
+}
+
+#booksTable td:nth-child(2) {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+#booksTable td:nth-child(3) {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+/* Badge pour la catégorie */
+#booksTable td:nth-child(4) {
+  font-size: 12px;
+}
+
+#booksTable td:nth-child(4)::before {
+  content: '📚 ';
+}
+
+/* Statut avec badge coloré */
+#booksTable td:nth-child(7) {
+  font-weight: 600;
+  text-align: center;
+}
+
+#booksTable tbody tr td:nth-child(7) {
+  padding: 8px;
+}
+
+#booksTable td:nth-child(7)::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* Disponible = vert */
+#booksTable tbody tr:has(td:nth-child(7):contains('Disponible')) td:nth-child(7) {
+  color: #28a745;
+}
+
+#booksTable tbody tr:has(td:nth-child(7):contains('Disponible')) td:nth-child(7)::before {
+  background-color: #28a745;
+}
+
+/* Indisponible = rouge */
+#booksTable tbody tr:has(td:nth-child(7):contains('Indisponible')) td:nth-child(7) {
+  color: #dc3545;
+}
+
+#booksTable tbody tr:has(td:nth-child(7):contains('Indisponible')) td:nth-child(7)::before {
+  background-color: #dc3545;
+}
+
+/* Note avec étoiles */
+#booksTable td:nth-child(8) {
+  font-weight: 600;
+  color: #f39c12;
+  text-align: center;
+}
+
+#booksTable td:nth-child(8)::after {
+  content: ' ⭐';
+  font-size: 12px;
+}
+
+/* Actions */
+#booksTable td:nth-child(9) {
+  text-align: center;
+}
+
+#booksTable .btn-delete {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+}
+
+#booksTable .btn-delete:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+/* Message "Aucun livre" */
+#booksTable td[colspan] {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 40px;
+  font-size: 16px;
+  background: #f8f9fa;
+}
+
+#booksTable td[colspan]::before {
+  content: '📖 ';
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  #booksTable {
+    font-size: 12px;
+  }
+  
+  #booksTable th,
+  #booksTable td {
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  #Books form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  #Books form input[type="text"] {
+    min-width: 100%;
+  }
+  
+  #Books form button {
+    width: 100%;
+  }
+  
+  #booksTable {
+    font-size: 11px;
+  }
+  
+  #booksTable th,
+  #booksTable td {
+    padding: 8px 5px;
+  }
+}
+/* ===== MODAL GLOBAL (livres) ===== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenu du modal */
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  animation: modalFade 0.3s ease;
+}
+
+/* Animation douce */
+@keyframes modalFade {
+  from {
+    transform: translateY(-15px) scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Titre */
+#modalBookTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+/* Inputs */
+#modalBook input,
+#modalBook select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+#modalBook input:focus,
+#modalBook select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* Labels */
+#modalBook label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+/* Actions */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Boutons */
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Enregistrer */
+.modal-actions button[name="inscr_b"] {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+}
+
+.modal-actions button[name="inscr_b"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* Modifier */
+.modal-actions button[name="modif_b"] {
+  background: linear-gradient(135deg, #ffc107, #ff9800);
+  color: white;
+}
+
+.modal-actions button[name="modif_b"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.45);
+}
+
+/* Annuler */
+.modal-actions .close-modal {
+  background: #6c757d;
+  color: white;
+}
+
+.modal-actions .close-modal:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+   /* Styles pour la section réservations */
+#panelReservations {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+#panelReservations h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 24px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 10px;
+}
+
+/* Styles du tableau */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.table thead th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f3f5;
+  transform: scale(1.01);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table td {
+  padding: 15px;
+  color: #495057;
+  font-size: 14px;
+}
+
+/* Style pour la colonne Actions */
+.table td:last-child {
+  text-align: center;
+}
+
+/* Boutons d'action */
+.table button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: transform 0.2s ease;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.table button:hover {
+  transform: scale(1.2);
+}
+
+.table button[name="vali"] {
+  background-color: #28a745;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.table button[name="vali"]:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.table button[name="refus"] {
+  background-color: #dc3545;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.table button[name="refus"]:hover {
+  background-color: #c82333;
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Message "Pas de demande" */
+.table td[colspan] {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 30px;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table {
+    font-size: 12px;
+  }
+  
+  .table th, .table td {
+    padding: 10px 8px;
+  }
+  
+  .table button {
+    font-size: 16px;
+    margin: 0 2px;
+  }
+}
+
+  /* Styles pour la section Prêts */
+#panelLoans {
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#panelLoans h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 26px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+#panelLoans h2::before {
+  content: '📚 ';
+  margin-right: 8px;
+}
+
+/* Styles du tableau des prêts */
+#loansTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+#loansTable thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+#loansTable th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+#loansTable tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+#loansTable tbody tr:hover {
+  background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+  transform: scale(1.005);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+#loansTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+#loansTable td {
+  padding: 14px 12px;
+  color: #495057;
+  vertical-align: middle;
+}
+
+/* Colonne Étudiant */
+#loansTable td:nth-child(1) {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+#loansTable td:nth-child(1)::before {
+  content: '👤 ';
+  margin-right: 4px;
+}
+
+/* Colonne Livre */
+#loansTable td:nth-child(2) {
+  font-weight: 500;
+  color: #3498db;
+}
+
+#loansTable td:nth-child(2)::before {
+  content: '📖 ';
+  margin-right: 4px;
+}
+
+/* Colonne Début (Date de réservation) */
+#loansTable td:nth-child(3) {
+  font-family: 'Courier New', monospace;
+  color: #6c757d;
+  font-size: 13px;
+  text-align: center;
+}
+
+#loansTable td:nth-child(3)::before {
+  content: '📅 ';
+  margin-right: 4px;
+}
+
+/* Colonne Retour prévu */
+#loansTable td:nth-child(4) {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* Badge coloré selon la date de retour */
+#loansTable td:nth-child(4) {
+  position: relative;
+  padding: 10px;
+}
+
+/* Date de retour normale (vert clair) */
+#loansTable tbody tr td:nth-child(4) {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border-radius: 6px;
+}
+
+#loansTable td:nth-child(4)::before {
+  content: '⏰ ';
+  margin-right: 4px;
+}
+
+/* Colonne Actions */
+#loansTable td:nth-child(5) {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Boutons d'action */
+#loansTable button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 4px;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+#loansTable button:hover {
+  transform: translateY(-2px);
+}
+
+/* Bouton Prolonger */
+#loansTable .btn-validate-extend {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3);
+}
+
+#loansTable .btn-validate-extend:hover {
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.5);
+}
+
+#loansTable .btn-validate-extend::before {
+  content: '✓ ';
+  margin-right: 4px;
+}
+
+/* Bouton Pénaliser */
+#loansTable .btn-penalize-loan {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  box-shadow: 0 2px 5px rgba(255, 193, 7, 0.3);
+}
+
+#loansTable .btn-penalize-loan:hover {
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.5);
+}
+
+#loansTable .btn-penalize-loan::before {
+  content: '⚠️ ';
+  margin-right: 4px;
+}
+
+/* Message "Aucun prêt" */
+#loansTable td[colspan] {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 40px;
+  font-size: 16px;
+  background: #f8f9fa;
+}
+
+#loansTable td[colspan]::before {
+  content: '📚 ';
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Effet pour les lignes avec date dépassée (optionnel - nécessite JS ou classe PHP) */
+.loan-overdue td:nth-child(4) {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%) !important;
+  color: #721c24 !important;
+  font-weight: 700;
+}
+
+.loan-overdue td:nth-child(4)::before {
+  content: '🚨 ';
+}
+
+/* Effet pour les lignes bientôt en retard (< 3 jours) */
+.loan-warning td:nth-child(4) {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%) !important;
+  color: #856404 !important;
+  font-weight: 700;
+}
+
+.loan-warning td:nth-child(4)::before {
+  content: '⏳ ';
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  #loansTable {
+    font-size: 12px;
+  }
+  
+  #loansTable th,
+  #loansTable td {
+    padding: 10px 8px;
+  }
+  
+  #loansTable button {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  #loansTable {
+    font-size: 11px;
+  }
+  
+  #loansTable th,
+  #loansTable td {
+    padding: 8px 5px;
+  }
+  
+  #loansTable button {
+    font-size: 11px;
+    padding: 6px 10px;
+    margin: 2px;
+  }
+  
+  #loansTable td:nth-child(1)::before,
+  #loansTable td:nth-child(2)::before,
+  #loansTable td:nth-child(3)::before,
+  #loansTable td:nth-child(4)::before {
+    display: none;
+  }
+  
+  #loansTable button::before {
+    display: none;
+  }
+}
+
+   /* Styles pour la section Liste d'attente */
+#panelWaitlist {
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#panelWaitlist h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 26px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+#panelWaitlist h2::before {
+  content: '⏳ ';
+  margin-right: 8px;
+}
+
+/* Label du sélecteur */
+#panelWaitlist label {
+  display: block;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+#panelWaitlist label::before {
+  content: '📚 ';
+  margin-right: 6px;
+}
+
+/* Formulaire de sélection */
+#panelWaitlist form {
+  margin-bottom: 30px;
+}
+
+#panelWaitlist select {
+  width: 100%;
+  max-width: 600px;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #495057;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  padding-right: 40px;
+}
+
+#panelWaitlist select:hover {
+  border-color: #3498db;
+}
+
+#panelWaitlist select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Titre de la liste sélectionnée */
+#panelWaitlist h3 {
+  color: #2c3e50;
+  font-size: 20px;
+  margin: 25px 0 20px 0;
+  padding: 15px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+#panelWaitlist h3::before {
+  content: '📖 ';
+  margin-right: 8px;
+}
+
+/* Message "Aucun étudiant" */
+#panelWaitlist p {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 8px;
+  color: #6c757d;
+  font-size: 16px;
+  font-style: italic;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#panelWaitlist p::before {
+  content: '✓ ';
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
+  color: #28a745;
+}
+
+/* Styles du tableau de liste d'attente */
+.waitlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.waitlist-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.waitlist-table th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.waitlist-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.waitlist-table tbody tr:hover {
+  background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+  transform: scale(1.005);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.waitlist-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.waitlist-table td {
+  padding: 14px 12px;
+  color: #495057;
+  vertical-align: middle;
+}
+
+/* Colonne ID Étudiant */
+.waitlist-table td:nth-child(1) {
+  font-weight: 600;
+  color: #3498db;
+  font-family: 'Courier New', monospace;
+}
+
+.waitlist-table td:nth-child(1)::before {
+  content: '🎓 ';
+  margin-right: 6px;
+}
+
+/* Colonne Nom */
+.waitlist-table td:nth-child(2) {
+  font-weight: 500;
+  color: #2c3e50;
+  text-transform: uppercase;
+}
+
+/* Colonne Prénom */
+.waitlist-table td:nth-child(3) {
+  font-weight: 500;
+  color: #495057;
+}
+
+/* Numérotation automatique des lignes (position dans la file) */
+.waitlist-table tbody {
+  counter-reset: row-number;
+}
+
+.waitlist-table tbody tr {
+  counter-increment: row-number;
+}
+
+.waitlist-table tbody tr td:first-child {
+  position: relative;
+  padding-left: 45px;
+}
+
+.waitlist-table tbody tr td:first-child::after {
+  content: counter(row-number);
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(255, 152, 0, 0.3);
+}
+
+/* Badge spécial pour le premier de la liste */
+.waitlist-table tbody tr:first-child td:first-child::after {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.5);
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+}
+
+/* Effet "prioritaire" pour le premier */
+.waitlist-table tbody tr:first-child {
+  background: linear-gradient(to right, #d4edda 0%, #c3e6cb 100%);
+}
+
+.waitlist-table tbody tr:first-child:hover {
+  background: linear-gradient(to right, #c3e6cb 0%, #b1dfbb 100%);
+}
+
+/* Animation pour la première ligne */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 3px 8px rgba(40, 167, 69, 0.3);
+  }
+  50% {
+    box-shadow: 0 3px 15px rgba(40, 167, 69, 0.6);
+  }
+}
+
+.waitlist-table tbody tr:first-child td:first-child::after {
+  animation: pulse 2s infinite;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .waitlist-table {
+    font-size: 12px;
+  }
+  
+  .waitlist-table th,
+  .waitlist-table td {
+    padding: 10px 8px;
+  }
+  
+  .waitlist-table tbody tr td:first-child {
+    padding-left: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  #panelWaitlist select {
+    max-width: 100%;
+    font-size: 13px;
+  }
+  
+  #panelWaitlist h3 {
+    font-size: 16px;
+    padding: 12px;
+  }
+  
+  .waitlist-table {
+    font-size: 11px;
+  }
+  
+  .waitlist-table th,
+  .waitlist-table td {
+    padding: 8px 5px;
+  }
+  
+  .waitlist-table tbody tr td:first-child {
+    padding-left: 35px;
+  }
+  
+  .waitlist-table tbody tr td:first-child::after {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    left: 8px;
+  }
+  
+  .waitlist-table tbody tr:first-child td:first-child::after {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .waitlist-table td:nth-child(1)::before {
+    display: none;
+  }
+}
+
+
+  /* Styles pour la section Alertes & Messages */
+#panelAlerts {
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#panelAlerts h2 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 26px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+#panelAlerts h2::before {
+  content: '📧 ';
+  margin-right: 8px;
+}
+
+/* Formulaire d'envoi de message */
+#panelAlerts #alertForm {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#panelAlerts .alerts-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#panelAlerts #alertText {
+  flex: 1;
+  min-width: 300px;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #495057;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+#panelAlerts #alertText:hover {
+  border-color: #3498db;
+}
+
+#panelAlerts #alertText:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+#panelAlerts button[type="submit"],
+#panelAlerts button[type="reset"] {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#panelAlerts button[name="me"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+#panelAlerts button[name="me"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#panelAlerts button[type="reset"] {
+  background: #dc3545;
+  color: white;
+  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+}
+
+#panelAlerts button[type="reset"]:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Titres des sections de messages */
+#panelAlerts h3 {
+  color: #2c3e50;
+  font-size: 20px;
+  margin: 25px 0 20px 0;
+  padding: 15px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+#panelAlerts h3::before {
+  content: '📨 ';
+  margin-right: 8px;
+}
+
+/* Messages envoyés - style bleu */
+#panelAlerts ul[style*="e3f2fd"] {
+  background-color: #e3f2fd !important;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #2196F3;
+  list-style: none;
+  margin: 15px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#panelAlerts ul[style*="e3f2fd"] li {
+  margin-bottom: 10px;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 3px solid #2196F3;
+}
+
+#panelAlerts ul[style*="e3f2fd"] li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 3px 8px rgba(33, 150, 243, 0.2);
+}
+
+#panelAlerts ul[style*="e3f2fd"] li strong {
+  color: #1565C0;
+  font-weight: 600;
+}
+
+#panelAlerts ul[style*="e3f2fd"] li strong::before {
+  content: '👤 ';
+  margin-right: 5px;
+}
+
+#panelAlerts ul[style*="e3f2fd"] li span {
+  color: #333;
+  display: block;
+  margin-top: 5px;
+  padding-left: 25px;
+}
+
+/* Messages reçus - style violet */
+#panelAlerts ul[style*="f3e5f5"] {
+  background-color: #f3e5f5 !important;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #9C27B0;
+  list-style: none;
+  margin: 15px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#panelAlerts ul[style*="f3e5f5"] li {
+  margin-bottom: 10px;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 3px solid #9C27B0;
+}
+
+#panelAlerts ul[style*="f3e5f5"] li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 3px 8px rgba(156, 39, 176, 0.2);
+}
+
+#panelAlerts ul[style*="f3e5f5"] li strong {
+  color: #6A1B9A;
+  font-weight: 600;
+}
+
+#panelAlerts ul[style*="f3e5f5"] li strong::before {
+  content: '💬 ';
+  margin-right: 5px;
+}
+
+#panelAlerts ul[style*="f3e5f5"] li span {
+  color: #333;
+  display: block;
+  margin-top: 5px;
+  padding-left: 25px;
+}
+
+/* Message "Aucun message" */
+#panelAlerts p {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 8px;
+  color: #6c757d;
+  font-size: 16px;
+  font-style: italic;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin: 15px 0;
+}
+
+#panelAlerts p::before {
+  content: '📭 ';
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
+  color: #6c757d;
+}
+
+/* Animation pour les nouveaux messages */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+#panelAlerts ul li {
+  animation: slideIn 0.4s ease-out;
+}
+
+/* Style pour le modal de message */
+#modalMessage {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#modalMessage .modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  max-width: 600px;
+  width: 90%;
+}
+
+#modalMessage h3 {
+  color: #2c3e50;
+  font-size: 22px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+#modalMessage h3::before {
+  content: '✉️ ';
+  margin-right: 8px;
+}
+
+#modalMessage textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #495057;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+#modalMessage textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+#modalMessage .modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+#modalMessage .modal-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#modalMessage button[name="envoyer_message"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+#modalMessage button[name="envoyer_message"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#modalMessage button[type="button"] {
+  background: #6c757d;
+  color: white;
+  box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);
+}
+
+#modalMessage button[type="button"]:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #panelAlerts {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  #panelAlerts h2 {
+    font-size: 22px;
+  }
+  
+  #panelAlerts h3 {
+    font-size: 18px;
+    padding: 12px;
+  }
+  
+  #panelAlerts .alerts-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  #panelAlerts #alertText {
+    min-width: 100%;
+    width: 100%;
+  }
+  
+  #panelAlerts button[type="submit"],
+  #panelAlerts button[type="reset"] {
+    width: 100%;
+  }
+  
+  #panelAlerts ul li {
+    font-size: 13px;
+    padding: 10px;
+  }
+  
+  #modalMessage .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+  
+  #modalMessage h3 {
+    font-size: 18px;
+  }
+}
+/* Titre spécifique pour les messages reçus - style violet */
+#panelAlerts h3:nth-of-type(2) {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  border-left: 4px solid #9C27B0;
+}
+
+#panelAlerts h3:nth-of-type(2)::before {
+  content: '💬 ';
+  margin-right: 8px;
+}
+
+    /* ===== GÉNÉRAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px 40px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 25px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-block;
+}
+
+header nav a:hover {
+  background: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+header nav a::before {
+  content: '← ';
+  margin-right: 6px;
+}
+
+/* ===== MAIN CONTENT ===== */
+main {
+  max-width: 1400px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* ===== SECTION STATISTIQUES ===== */
+section {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section h2 {
+  color: #2c3e50;
+  font-size: 24px;
+  margin-bottom: 25px;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+section h2::before {
+  content: '📊 ';
+  margin-right: 8px;
+}
+
+/* ===== GRILLE DE STATISTIQUES ===== */
+section > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+section p {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 20px 25px;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #495057;
+  border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-weight: 500;
+}
+
+section p:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+/* Couleurs spécifiques par type de stat */
+section p:nth-child(1) {
+  border-left-color: #ffc107;
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+}
+
+section p:nth-child(2) {
+  border-left-color: #28a745;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+
+section p:nth-child(3) {
+  border-left-color: #dc3545;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+}
+
+section p:nth-child(4) {
+  border-left-color: #17a2b8;
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+}
+
+section p:nth-child(5) {
+  border-left-color: #6610f2;
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+}
+
+section p:nth-child(6) {
+  border-left-color: #fd7e14;
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+}
+
+section p:nth-child(7) {
+  border-left-color: #20c997;
+  background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+}
+
+/* ===== SECTION GRAPHIQUES ===== */
+section:last-child h2::before {
+  content: '📈 ';
+}
+
+/* Container pour les graphiques */
+section canvas {
+  margin: 25px 0;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+/* Wrapper pour améliorer l'espacement */
+.chart-container {
+  margin-bottom: 40px;
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.chart-title {
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  border-left: 4px solid #667eea;
+}
+
+/* ===== CARDS DE STATISTIQUES (Alternative) ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.stat-card .icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.stat-card .value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 10px 0;
+}
+
+.stat-card .label {
+  font-size: 14px;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.badge-warning {
+  background: #ffc107;
+  color: #856404;
+}
+
+.badge-success {
+  background: #28a745;
+  color: white;
+}
+
+.badge-danger {
+  background: #dc3545;
+  color: white;
+}
+
+.badge-info {
+  background: #17a2b8;
+  color: white;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  section > div {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 20px;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  header h1 {
+    font-size: 24px;
+  }
+  
+  main {
+    padding: 0 15px;
+  }
+  
+  section {
+    padding: 20px;
+  }
+  
+  section h2 {
+    font-size: 20px;
+  }
+  
+  section > div {
+    grid-template-columns: 1fr;
+  }
+  
+  section p {
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 20px;
+  }
+  
+  section {
+    padding: 15px;
+  }
+  
+  section h2 {
+    font-size: 18px;
+  }
+  
+  section p {
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+}
+
+/* ===== ANIMATIONS POUR LES STATS ===== */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+section p {
+  animation: countUp 0.5s ease backwards;
+}
+
+section p:nth-child(1) { animation-delay: 0.1s; }
+section p:nth-child(2) { animation-delay: 0.15s; }
+section p:nth-child(3) { animation-delay: 0.2s; }
+section p:nth-child(4) { animation-delay: 0.25s; }
+section p:nth-child(5) { animation-delay: 0.3s; }
+section p:nth-child(6) { animation-delay: 0.35s; }
+section p:nth-child(7) { animation-delay: 0.4s; }
+
+/* ===== AMÉLIORATION DES GRAPHIQUES ===== */
+canvas {
+  max-height: 400px;
+}
+
+/* ===== FOOTER (optionnel) ===== */
+footer {
+  background: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 50px;
+}
