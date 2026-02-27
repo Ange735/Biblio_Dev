@@ -17,10 +17,10 @@ if(isset($_POST['validate_extend'])){
               AND statue_empr='en_cours'";
 
     if($conn->query($sql) === TRUE){
-        echo "<script>alert('Prolongation validée !');window.location='admin_pret.php';</script>";
+        echo "<script>alert('Extension validated!');window.location='admin_pret.php';</script>";
         exit();
     } else {
-        echo 'Erreur UPDATE emprunt : ' . $conn->error;
+        echo 'Error UPDATE emprunt : ' . $conn->error;
     }
 }
 
@@ -32,24 +32,24 @@ if(isset($_POST['penalize'])){
     $sql3 = "UPDATE étudiant SET nbr_retard = nbr_retard + 1 WHERE ID_etu = '$etu'";
 
     if ($conn->query($sql3) === TRUE) {
-        // Vérification du nombre de retards
+        // Check number of delays
         $sql1 = "SELECT nbr_retard FROM étudiant WHERE ID_etu = '$etu'";
         $result = $conn->query($sql1);
         $row = $result->fetch_assoc();
 
-        // Si blocage nécessaire
+        // If blocking needed
         if ($row['nbr_retard'] >= 3) {
             $sql = "UPDATE étudiant SET statue_etu = 0 WHERE ID_etu = '$id'";
             $conn->query($sql);
-            echo "<script>alert('Utilisateur bloqué !');window.location='admin_pret.php';</script>";
+            echo "<script>alert('User blocked!');window.location='admin_pret.php';</script>";
             exit();
         } else {
-            echo "<script>alert('Utilisateur pénalisé !');window.location='admin_pret.php';</script>";
+            echo "<script>alert('User penalized!');window.location='admin_pret.php';</script>";
             exit();
         }
 
     } else {
-        echo "Erreur : " . $conn->error;
+        echo "Error: " . $conn->error;
     }
 
 }
@@ -58,19 +58,19 @@ if(isset($_POST['penalize'])){
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin - Bibliothèque Universitaire</title>
+  <title>Admin - University Library</title>
   <link rel="stylesheet" href="admin_style.css" />
   <link rel="stylesheet" href="admin_new_style.css">
 </head>
 <body>
   <header class="admin-header">
-    <h1>🔧 Espace Administrateur — Bibliothèque</h1>
+    <h1>🔧 Admin Space — Library</h1>
     <div class="header-actions">
-      <button id="btnInventory">Statistiques</button>
+      <button id="btnInventory">Statistics</button>
     </div>
   </header>
 
@@ -78,17 +78,17 @@ if(isset($_POST['penalize'])){
     <aside class="sidebar">
       <ul>
         <li><a href="admin_livre.php" class="menu-link <?php echo ($activePage=='livres') ? 'active' : ''; ?>">
-     Livres (CRUD)</a></li>
+     Books (CRUD)</a></li>
         <li><a href="admin_etudiant.php" class="menu-link <?php echo ($activePage=='etudiants') ? 'active' : ''; ?>">
-     Étudiants (CRUD)</a></li>
+     Students (CRUD)</a></li>
         <li><a href="admin_reserv.php" class="menu-link <?php echo ($activePage=='reservation') ? 'active' : ''; ?>">
-     Réservations</a></li>
+     Reservations</a></li>
         <li><a href="admin_pret.php" class="menu-link <?php echo ($activePage=='pret') ? 'active' : ''; ?>">
-     Prêts</a></li>
+     Loans</a></li>
         <li><a href="admin_liste.php" class="menu-link <?php echo ($activePage=='liste') ? 'active' : ''; ?>">
-     Liste d'attente</a></li>
+     Waiting List</a></li>
         <li><a href="admin_messages.php" class="menu-link <?php echo ($activePage=='messages') ? 'active' : ''; ?>">
-     Alertes & Messages</a></li>
+     Alerts & Messages</a></li>
     </aside>
 
 
@@ -98,13 +98,13 @@ if(isset($_POST['penalize'])){
 
 
 <section id="panelLoans" >
-      <h2>État des prêts</h2>
+      <h2>Loan Status</h2>
       <table class="table" id="loansTable">
         <tr>
-          <th>Etudiant</th>
-          <th>Livre</th>
-          <th>Début</th>
-          <th>Retour prévu</th>
+          <th>Student</th>
+          <th>Book</th>
+          <th>Start</th>
+          <th>Expected Return</th>
           <th>Actions</th>
         </tr>
         <?php 
@@ -125,14 +125,14 @@ if(isset($_POST['penalize'])){
                                 <input type='hidden' name='etu' value='{$row['ID_etu']}'>
                                 <input type='hidden' name='liv' value='{$row['ISBN']}'>
                                 <input type='hidden' name='empr' value='{$row['date_retour']}'>
-                                <button class='btn-validate-extend' name='validate_extend'> prolonger</button>
-                                <button class='btn-penalize-loan' name='penalize' >Pénaliser</button>
+                                <button class='btn-validate-extend' name='validate_extend'> Extend</button>
+                                <button class='btn-penalize-loan' name='penalize' >Penalize</button>
                               </form>
                             </td>";
                       echo "</tr>";
                   }
               } else {
-                  echo "<tr><td colspan='5'>Aucun prêt en cours.</td></tr>";
+                  echo "<tr><td colspan='5'>No current loans.</td></tr>";
               }
 
         ?>
@@ -163,7 +163,7 @@ if(isset($_POST['penalize'])){
     <div class="toast" id="toast"></div>
 
   <script>
-    // --- JS minimal pour interactions ---
+    // --- Minimal JS for interactions ---
     function toast(msg){ 
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -186,13 +186,13 @@ if(isset($_POST['penalize'])){
 
     document.getElementById('sendAlertBtn').addEventListener('click', ()=>{
       const text = document.getElementById('alertText').value.trim();
-      if(!text){ alert('Texte vide'); return;}
+      if(!text){ alert('Empty text'); return;}
       const studentSelect = document.getElementById('alertStudentSelect');
       const id = studentSelect.value;
       const name = studentSelect.options[studentSelect.selectedIndex].text;
       const ul = document.getElementById('alertsList');
-      ul.insertAdjacentHTML('afterbegin', `<li>${id? 'Alerte à '+name : 'Alerte globale'}: ${text}</li>`);
-      toast('Alerte envoyée');
+      ul.insertAdjacentHTML('afterbegin', `<li>${id? 'Alert to '+name : 'Global alert'}: ${text}</li>`);
+      toast('Alert sent');
       document.getElementById('alertText').value='';
     });
   </script>
