@@ -16,7 +16,7 @@ include 'config2.php';
     $isbn = intval($_POST['isbn']);
     $id_etudiant = htmlspecialchars($_POST['id_etu']);
 
-    // 1️⃣ Vérifier si l'étudiant a déjà réservé CE livre
+    // 1️⃣ Check if the student has already reserved THIS book
     $sql_check_same = "SELECT COUNT(*) AS count FROM reservation 
                        WHERE ISBN = $isbn AND ID_etu = '$id_etudiant' 
                        AND statut = 'en_attente'";
@@ -24,12 +24,12 @@ include 'config2.php';
     $row_same = $result_same->fetch_assoc();
 
     if ($row_same['count'] > 0) {
-        echo "<script>alert('Vous avez déjà une réservation en attente pour ce livre.'); 
+        echo "<script>alert('You already have a pending reservation for this book.'); 
               window.location='etu_catalogue.php';</script>";
         exit();
     }
 
-    // 2️⃣ Vérifier si l'étudiant a déjà 2 réservations en attente 
+    // 2️⃣ Check if the student already has 2 pending reservations
     $sql_check_total = "SELECT COUNT(*) AS total FROM reservation 
                         WHERE ID_etu = '$id_etudiant' 
                         AND statut = 'en_attente'";
@@ -37,19 +37,19 @@ include 'config2.php';
     $row_total = $result_total->fetch_assoc();
 
     if ($row_total['total'] >= 2) {
-        echo "<script>alert('Vous avez déjà 2 réservations en attente, impossible d\\'en ajouter une autre.'); 
+        echo "<script>alert('You already have 2 pending reservations, you cannot add another one.'); 
               window.location='etu_catalogue.php';</script>";
         exit();
     }
 
-    // 3️⃣ Ajouter la réservation
+    // 3️⃣ Add the reservation
     $sql_insert = "INSERT INTO reservation (ISBN, ID_etu) VALUES ($isbn, '$id_etudiant')";
 
     if ($conn->query($sql_insert) === TRUE) {
-        echo "<script>alert('Réservation réussie !'); window.location='etu_catalogue.php';</script>";
+        echo "<script>alert('Reservation successful!'); window.location='etu_catalogue.php';</script>";
         exit();
     } else {
-        echo "Erreur: " . $conn->error;
+        echo "Error: " . $conn->error;
     }
 }
 
@@ -58,26 +58,26 @@ if (isset($_POST['att'])) {
     $isbn = intval($_POST['isbn']);
     $id_etudiant = htmlspecialchars($_POST['id_etu']);
 
-    // 1️⃣ Vérifier si l'étudiant a déjà rejoint la liste d'attente CE livre
+    // 1️⃣ Check if the student has already joined the waiting list for THIS book
     $sql_check_same = "SELECT COUNT(*) AS count FROM liste_att
                        WHERE ISBN = $isbn AND ID_etu = '$id_etudiant'";
     $result_same = $conn->query($sql_check_same);
     $row_same = $result_same->fetch_assoc();
 
     if ($row_same['count'] > 0) {
-        echo "<script>alert('Vous avez déjà rejoint la liste d\\'attente pour ce livre.'); 
+        echo "<script>alert('You have already joined the waiting list for this book.'); 
               window.location='etu_catalogue.php';</script>";
         exit();
     }
 
-    // 2️⃣ Ajouter à la liste d'attente
+    // 2️⃣ Add to waiting list
     $sql_insert = "INSERT INTO liste_att (ISBN, ID_etu) VALUES ($isbn, '$id_etudiant')";
 
     if ($conn->query($sql_insert) === TRUE) {
-        echo "<script>alert('Vous avez rejoint la liste d\\'attente avec succès !'); window.location='etu_catalogue.php';</script>";
+        echo "<script>alert('You have successfully joined the waiting list!'); window.location='etu_catalogue.php';</script>";
         exit();
     } else {
-        echo "Erreur: " . $conn->error;
+        echo "Error: " . $conn->error;
     }
 }
 
@@ -87,27 +87,27 @@ if (isset($_POST['eval']) && isset($_POST['eval_l']) && isset($_POST['note'])) {
     $id_etudiant = $_SESSION['id_etudiant'];
 
 
-    // Vérifier que la note est valide (1 à 5)
+    // Check that the rating is valid (1 to 5)
     if ($note < 1 || $note > 5) {
-        echo "<script>alert('La note doit être entre 1 et 5 !'); window.location='etu_catalogue.php';</script>";
+        echo "<script>alert('The rating must be between 1 and 5!'); window.location='etu_catalogue.php';</script>";
         exit();
     }
 
-    // Optionnel : vérifier si l'étudiant a déjà évalué ce livre
+    // Optional: check if the student has already rated this book
 
     
 
-    // Insérer la note
+    // Insert the rating
     $sql_up = "INSERT INTO evaluation (ISBN, vote_tot, ID_etu) VALUES ($isbn,$note,'$id_etudiant')";
     if ($conn->query($sql_up) === TRUE) {
-        // Optionnel : enregistrer l'évaluation de l'étudiant
+        // Optional: save the student's evaluation
         $sql_insert_eval = "UPDATE livre SET note=(SELECT AVG(vote_tot) FROM evaluation WHERE ISBN=$isbn) WHERE ISBN=$isbn";
         $conn->query($sql_insert_eval);
 
-        echo "<script>alert('Merci pour votre évaluation !'); window.location='etu_catalogue.php';</script>";
+        echo "<script>alert('Thank you for your rating!'); window.location='etu_catalogue.php';</script>";
         exit();
     } else {
-        echo "Erreur: " . $conn->error;
+        echo "Error: " . $conn->error;
     }
   }
 
@@ -118,26 +118,26 @@ if (isset($_POST['eval']) && isset($_POST['eval_l']) && isset($_POST['note'])) {
 
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Étudiant - Bibliothèque Universitaire</title>
+  <title>Student Space - University Library</title>
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="etudiant_new_style.css">
 </head>
 <body>
 
 <header>
-  <h1>📚 Bibliothèque Universitaire</h1>
+  <h1>📚 University Library</h1>
   <nav>
     <ul>
       <li><a href="etu_catalogue.php" class="nav-link" class="menu-link <?php echo ($activePage=='catalogue') ? 'active' : ''; ?>">
      Catalogue</a></li>
       <li><a href="etu_emprunt.php" class="nav-link" class="menu-link <?php echo ($activePage=='emprunt') ? 'active' : ''; ?>">
-     Mes emprunts</a></li>
+     My Loans</a></li>
       <li><a href="etu_profil.php" class="nav-link" class="menu-link <?php echo ($activePage=='profil') ? 'active' : ''; ?>">
-     Profil</a></li>
+     Profile</a></li>
       <li><a href="etu_messages.php" class="nav-link" class="menu-link <?php echo ($activePage=='messages') ? 'active' : ''; ?>">
      Messages</a></li>
       <li><a href="etu_notification.php" class="nav-link" class="menu-link <?php echo ($activePage=='notification') ? 'active' : ''; ?>">
@@ -149,15 +149,15 @@ if (isset($_POST['eval']) && isset($_POST['eval_l']) && isset($_POST['note'])) {
 <main>
 
 <section id="catalogue" >
-    <h2>Rechercher un livre</h2>
+    <h2>Search for a book</h2>
     <form method="GET" action="">
       <div class="filters">
-        <input type="text" id="searchTitle" name="titre" placeholder="Titre du livre..." value="<?php echo isset($_GET['titre']) ? htmlspecialchars($_GET['titre']) : ''; ?>">
+        <input type="text" id="searchTitle" name="titre" placeholder="Book title..." value="<?php echo isset($_GET['titre']) ? htmlspecialchars($_GET['titre']) : ''; ?>">
         
         <select id="categoryFilter" name="categorie">
-          <option value="">Catégorie</option>
+          <option value="">Category</option>
           <?php
-          // Récupérer toutes les catégories
+          // Retrieve all categories
           $sqlCat = "SELECT * FROM categorie";
           $resultCat = $conn->query($sqlCat);
           while($cat = $resultCat->fetch_assoc()):
@@ -168,20 +168,20 @@ if (isset($_POST['eval']) && isset($_POST['eval_l']) && isset($_POST['note'])) {
           <?php endwhile; ?>
         </select>
         
-        <input type="text" id="authorFilter" name="auteur" placeholder="Auteur..." value="<?php echo isset($_GET['auteur']) ? htmlspecialchars($_GET['auteur']) : ''; ?>">
+        <input type="text" id="authorFilter" name="auteur" placeholder="Author..." value="<?php echo isset($_GET['auteur']) ? htmlspecialchars($_GET['auteur']) : ''; ?>">
         
-        <button type="submit" id="searchBtn">🔍 Rechercher</button>
+        <button type="submit" id="searchBtn">🔍 Search</button>
         
         <?php if(isset($_GET['titre']) || isset($_GET['categorie']) || isset($_GET['auteur'])): ?>
           <a href="?" style="text-decoration: none;">
-            <button type="button" id="cancelBtn">❌ Annuler</button>
+            <button type="button" id="cancelBtn">❌ Cancel</button>
           </a>
         <?php endif; ?>
       </div>
     </form>
 
 <?php 
-// Construction de la requête SQL avec filtres
+// Build SQL query with filters
 $sql = "SELECT l.*, c.libelle AS nom_categorie 
         FROM livre l 
         LEFT JOIN categorie c ON l.ID_cat = c.ID_cat WHERE 1=1";
@@ -190,28 +190,28 @@ $conditions = array();
 $types = "";
 $params = array();
 
-// Filtre par titre
+// Filter by title
 if(isset($_GET['titre']) && !empty($_GET['titre'])) {
     $sql .= " AND l.titre LIKE ?";
     $types .= "s";
     $params[] = "%" . $_GET['titre'] . "%";
 }
 
-// Filtre par catégorie
+// Filter by category
 if(isset($_GET['categorie']) && !empty($_GET['categorie'])) {
     $sql .= " AND l.ID_cat = ?";
     $types .= "s";
     $params[] = $_GET['categorie'];
 }
 
-// Filtre par auteur
+// Filter by author
 if(isset($_GET['auteur']) && !empty($_GET['auteur'])) {
     $sql .= " AND l.auteur LIKE ?";
     $types .= "s";
     $params[] = "%" . $_GET['auteur'] . "%";
 }
 
-// Exécution de la requête
+// Execute query
 if(!empty($params)) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param($types, ...$params);
@@ -226,17 +226,17 @@ if(!empty($params)) {
 <?php 
 if($result->num_rows > 0):
     while($livre = $result->fetch_assoc()): 
-        // Déterminer si le livre est disponible
+        // Determine if the book is available
         $disponible = ($livre['nbr_exemp'] - $livre['nbr_empr']) > 0;
-        $bookID = intval($livre['ISBN']); // identifiant unique pour chaque livre
+        $bookID = intval($livre['ISBN']); // unique identifier for each book
 ?>
     
     <?php
-// Calculer la disponibilité
+// Calculate availability
 $disponible = ($livre['nbr_exemp'] - $livre['nbr_empr']) > 0 ? true : false;
 
-// Mettre à jour la colonne statut_liv dans la table livre
-$statut = $disponible ? 'Disponible' : 'Indisponible';
+// Update the statut_liv column in the livre table
+$statut = $disponible ? 'Available' : 'Unavailable';
 $sql_update_statut = "UPDATE livre SET statue_liv = ? WHERE ISBN = ?";
 $stmt_update_statut = $conn->prepare($sql_update_statut);
 $stmt_update_statut->bind_param("si", $statut, $livre['ISBN']);
@@ -245,48 +245,48 @@ $stmt_update_statut->close();
 ?>
 
 <div class="book-card <?php echo $disponible ? 'disponible' : 'indisponible'; ?>">
-    <img src="<?php echo htmlspecialchars($livre['imag']); ?>" alt="Livre">
+    <img src="<?php echo htmlspecialchars($livre['imag']); ?>" alt="Book">
     <h3><?php echo htmlspecialchars($livre['titre']); ?></h3>
-    <p>Auteur : <?php echo htmlspecialchars($livre['auteur']); ?></p>
-    <p>Catégorie : <?php echo htmlspecialchars($livre['nom_categorie']); ?></p>
+    <p>Author: <?php echo htmlspecialchars($livre['auteur']); ?></p>
+    <p>Category: <?php echo htmlspecialchars($livre['nom_categorie']); ?></p>
 
     <?php 
-    // Affichage de la note sous forme d'étoiles
+    // Display rating as stars
     $note = $livre['note'];
     if ($note) {
         $fullStars = floor($note);
         $halfStar = ($note - $fullStars) >= 0.5 ? true : false;
         $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
-        echo "<p>Note : ";
+        echo "<p>Rating: ";
         for ($i = 0; $i < $fullStars; $i++) echo "⭐";
-        if ($halfStar) echo "✬"; // demi-étoile
+        if ($halfStar) echo "✬"; // half star
         for ($i = 0; $i < $emptyStars; $i++) echo "☆";
         echo " (" . round($note,1) . "/5)</p>";
     } else {
-        echo "<p>Note : Non noté</p>";
+        echo "<p>Rating: Not rated</p>";
     }
     ?>
 
     <?php if($disponible): ?>
-        <p class="status available">✅ Disponible</p>
+        <p class="status available">✅ Available</p>
         <form method='POST' action='etu_catalogue.php' style='display:inline;' 
-            onsubmit="return confirm('Voulez-vous vraiment réserver ce livre ?');">
+            onsubmit="return confirm('Do you really want to reserve this book?');">
             <input type='hidden' name='isbn' value='<?php echo $bookID; ?>'>
             <input type='hidden' name='id_etu' value='<?php echo htmlspecialchars($id_etudiant); ?>'>
-            <button type='submit' name='reserv' class='btn-delete' title='Réserver'>Réservé</button>
+            <button type='submit' name='reserv' class='btn-delete' title='Reserve'>Reserve</button>
         </form>
     <?php else: ?>
-        <p class="status unavailable">❌ Indisponible</p>
+        <p class="status unavailable">❌ Unavailable</p>
         <form method='POST' action='etu_catalogue.php' style='display:inline;' 
-            onsubmit="return confirm('Voulez-vous vraiment rejoindre la liste d\'attente de ce livre ?');">
+            onsubmit="return confirm('Do you really want to join the waiting list for this book?');">
             <input type='hidden' name='isbn' value='<?php echo $bookID; ?>'>
             <input type='hidden' name='id_etu' value='<?php echo htmlspecialchars($id_etudiant); ?>'>
-            <button type='submit' name='att' class='btn-delete' title='Liste d\'attente'>Rejoindre la liste d'attente</button>
+            <button type='submit' name='att' class='btn-delete' title='Waiting list'>Join the waiting list</button>
         </form>
     <?php endif; ?>
 
-    <!-- Bouton pour ouvrir le modal d'évaluation -->
-    <button class='btn-delete eval-btn' data-isbn='<?php echo $bookID; ?>' title='Évaluer'>Évaluer</button>
+    <!-- Button to open the rating modal -->
+    <button class='btn-delete eval-btn' data-isbn='<?php echo $bookID; ?>' title='Rate'>Rate</button>
 </div>
 
 
@@ -294,7 +294,7 @@ $stmt_update_statut->close();
     endwhile;
 else:
 ?>
-    <p style="text-align: center; width: 100%; padding: 20px;">Aucun livre trouvé avec ces critères.</p>
+    <p style="text-align: center; width: 100%; padding: 20px;">No books found with these criteria.</p>
 <?php endif; ?>
 </div>
 
@@ -303,12 +303,12 @@ else:
 
 <div class="modal" id="modalEval">
   <div class="modal-content">
-    <h3>Évaluer le livre</h3>
+    <h3>Rate the book</h3>
     <form id="formEval" method="POST" action="etu_catalogue.php">
         <input type="hidden" name="eval_l" id="eval_l" value="">
-        <label for="note">Donnez une note :</label>
+        <label for="note">Give a rating:</label>
         <select name="note" id="note" required>
-            <option value="">-- Choisir une note --</option>
+            <option value="">-- Choose a rating --</option>
             <option value="1">1 ⭐</option>
             <option value="2">2 ⭐⭐</option>
             <option value="3">3 ⭐⭐⭐</option>
@@ -316,8 +316,8 @@ else:
             <option value="5">5 ⭐⭐⭐⭐⭐</option>
         </select>
         <div class="modal-actions">
-            <button type="submit" name="eval">Enregistrer</button>
-            <button type="button" class="close-modal">Annuler</button>
+            <button type="submit" name="eval">Save</button>
+            <button type="button" class="close-modal">Cancel</button>
         </div>
     </form>
   </div>
@@ -329,24 +329,24 @@ else:
 </style>
 
 <script>
-// Ouvrir le modal
-// Ouvrir le modal pour le livre correspondant
+// Open the modal
+// Open the modal for the corresponding book
 document.querySelectorAll('.eval-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const isbn = btn.dataset.isbn;
-        document.getElementById('eval_l').value = isbn; // mettre le bon ISBN dans le hidden
+        document.getElementById('eval_l').value = isbn; // set the correct ISBN in hidden field
         document.getElementById('modalEval').style.display = 'block';
     });
 });
 
-// Fermer le modal
+// Close the modal
 document.querySelectorAll('.close-modal').forEach(btn => {
     btn.addEventListener('click', () => {
         btn.closest('.modal').style.display = 'none';
     });
 });
 
-// Fermer modal en cliquant en dehors
+// Close modal by clicking outside
 window.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal')) {
         e.target.style.display = 'none';
@@ -360,13 +360,13 @@ window.addEventListener('click', function(e) {
 </main>
 
 <footer>
-  <p>© 2025 Bibliothèque Universitaire — Tous droits réservés</p>
+  <p>© 2025 University Library — All rights reserved</p>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // Toast simple
+  // Simple toast
   function toast(msg){ 
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -375,23 +375,23 @@ window.addEventListener('click', function(e) {
   }
 
 
-  // Réserver / liste d'attente / évaluation
+  // Reserve / waiting list / rating
   document.querySelectorAll('.reserve-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      toast('Livre réservé avec succès !');
+      toast('Book reserved successfully!');
       btn.disabled = true;
     });
   });
   document.querySelectorAll('.waitlist-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      toast('Ajouté à la liste d’attente');
+      toast('Added to the waiting list');
       btn.disabled = true;
     });
   });
   document.querySelectorAll('.evaluer-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      const note = prompt('Donnez une note (1-5)');
-      if(note) toast('Merci pour votre évaluation !');
+      const note = prompt('Give a rating (1-5)');
+      if(note) toast('Thank you for your rating!');
     });
   });
 

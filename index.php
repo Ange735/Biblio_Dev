@@ -2,7 +2,7 @@
 session_start();
 include 'config2.php';
 if (isset($_POST['inscr'])) {
-    // On récupère les données du formulaire d'inscription
+    // Retrieving registration form data
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -16,20 +16,20 @@ if (isset($_POST['inscr'])) {
         $sql1 = "SELECT * FROM étudiant WHERE Email='$email' OR ID_etu='$id'";
         $result = $conn->query($sql1);
         if ($result->num_rows > 0) {
-            echo "<script>alert('ERREUR! :Email déja utilisé ou ID_étudiant déja présent!');</script>";
+            echo "<script>alert('ERROR! : Email already used or Student ID already exists!');</script>";
         } else {
             if ($pass == $confpass) {
                 $sql = "INSERT INTO étudiant (ID_etu, nom, Prénom, Email, nbr_retard, statue_etu, mdp)
                 VALUES ('$id', '$nom', '$prenom', '$email', 0, 1, '$pass')";
 
                 if ($conn->query($sql) === TRUE) {
-                    echo "<script>alert('Inscription réussie !'); window.location='etu_catalogue.php';</script>";
+                    echo "<script>alert('Registration successful!'); window.location='etu_catalogue.php';</script>";
                     exit();
                 } else {
-                    echo "Erreur: " . $sql . "<br>" . $conn->error;
+                    echo "Error: " . $sql . "<br>" . $conn->error;
                 }
             } else {
-                echo "<script>alert('ERREUR! :mot de passe de confirmation différent du mot de passe !');</script>";
+                echo "<script>alert('ERROR! : Confirmation password does not match the password!');</script>";
 
             }
         }
@@ -37,7 +37,7 @@ if (isset($_POST['inscr'])) {
 }
 
 if (isset($_POST['connect'])) {
-    // On récupère les données du formulaire de connection
+    // Retrieving login form data
     if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $id = htmlspecialchars($_POST['id_etudiant']);
         $pass = htmlspecialchars($_POST['mot_de_passe']);
@@ -50,7 +50,7 @@ if (isset($_POST['connect'])) {
             $results = $conn->query($sql1);
             $rows = $results->fetch_assoc();
             if ($rows['statue_etu'] == 0) {
-                echo "<script>alert('Votre compte est bloqué en raison de trop nombreux retards. Veuillez contacter l\'administration pour le débloquer.');window.location='index.php';</script>";
+                echo "<script>alert('Your account has been blocked due to too many late returns. Please contact the administration to unblock it.');window.location='index.php';</script>";
                 exit();
     }
             else{
@@ -60,13 +60,13 @@ if (isset($_POST['connect'])) {
                 $_SESSION['id_etudiant'] = $id;
                 $_SESSION['etudiant_nom'] = $row['nom'];
                 $_SESSION['logged_in'] = true;
-                echo "<script>alert('Connexion réussie !!'); window.location='etu_catalogue.php';</script>";
+                echo "<script>alert('Login successful!!'); window.location='etu_catalogue.php';</script>";
                 exit();
             } else {
-                echo "<script>alert('Erreur : Mot de passe incorecte !');</script> ";
+                echo "<script>alert('Error: Incorrect password!');</script> ";
             }}}
             else {
-                echo "<script>alert('Erreur : Aucun compte trouvé pour cet ID étudiant ! (Réessayer avec un autre ID ou inscrivez-vous !)');</script> ";
+                echo "<script>alert('Error: No account found for this student ID! (Try another ID or register!)');</script> ";
         }
         
 }
@@ -76,58 +76,58 @@ $conn->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bibliothèque Universitaire - Étudiant</title>
+    <title>University Library - Student</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <div class="container">
-        <h1>Bibliothèque de l'Université</h1>
+        <h1>University Library</h1>
 
         <div class="form-box">
-            <!-- Formulaire de connexion -->
+            <!-- Login form -->
             <form id="loginForm" class="form active" method="POST" action="index.php">
-                <h2>Connexion Étudiant</h2>
-                <input type="text" name="id_etudiant" placeholder="ID Étudiant" required>
-                <input type="password" name="mot_de_passe" placeholder="Mot de passe" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Le mot de passe doit contenir au moins 8 caractères, dont au moins une lettre et un chiffre" required>
-                <button type="submit" name="connect">Se connecter</button>
-                <p>Pas encore inscrit ? <a href="#" id="showRegister">Créer un compte</a></p>
+                <h2>Student Login</h2>
+                <input type="text" name="id_etudiant" placeholder="Student ID" required>
+                <input type="password" name="mot_de_passe" placeholder="Password" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Password must contain at least 8 characters, including at least one letter and one number" required>
+                <button type="submit" name="connect">Log in</button>
+                <p>Not registered yet? <a href="#" id="showRegister">Create an account</a></p>
             </form>
 
-            <!-- Formulaire d'inscription -->
+            <!-- Registration form -->
             <form id="registerForm" class="form" method="POST" action="index.php">
-                <h2>Inscription Étudiant</h2>
-                <input type="text" name="nom" placeholder="Nom" required>
-                <input type="text" name="prenom" placeholder="Prénom" required>
-                <input type="text" name="id_etudiant" placeholder="ID Étudiant" required>
-                <input type="email" name="email" placeholder="Email universitaire" required>
-                <input type="password" name="mot_de_passe" placeholder="Mot de passe" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Le mot de passe doit contenir au moins 8 caractères, dont au moins une lettre et un chiffre" required>
-                <input type="password" name="cmdp" placeholder="Confirmer le mot de passe" minlength="8" required>
-                <button type="submit" name="inscr">S'inscrire</button>
-                <p>Déjà inscrit ? <a href="#" id="showLogin">Se connecter</a></p>
+                <h2>Student Registration</h2>
+                <input type="text" name="nom" placeholder="Last Name" required>
+                <input type="text" name="prenom" placeholder="First Name" required>
+                <input type="text" name="id_etudiant" placeholder="Student ID" required>
+                <input type="email" name="email" placeholder="University Email" required>
+                <input type="password" name="mot_de_passe" placeholder="Password" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Password must contain at least 8 characters, including at least one letter and one number" required>
+                <input type="password" name="cmdp" placeholder="Confirm password" minlength="8" required>
+                <button type="submit" name="inscr">Register</button>
+                <p>Already registered? <a href="#" id="showLogin">Log in</a></p>
             </form>
         </div>
     </div>
 
     <style>
-        /* Masquer les formulaires par défaut */
+        /* Hide forms by default */
 .form {
   display: none;
   animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Afficher uniquement le formulaire actif */
+/* Show only the active form */
 .form.active {
   display: block;
 }
 
-/* Animation d'apparition */
+/* Fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const showRegister = document.getElementById("showRegister");
     const showLogin = document.getElementById("showLogin");
 
-    // Sécurité : on cache toujours l'inscription au départ
+    // Security: always hide registration form at start
     registerForm.classList.remove("active");
     loginForm.classList.add("active");
 

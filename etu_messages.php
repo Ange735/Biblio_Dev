@@ -12,18 +12,18 @@ session_start();
 
 if (isset($_POST['send_message']) && !empty($_POST['message_text'])) {
 
-    $message = $_POST['message_text']; // sécuriser le texte
-    $id_etudiant = $_SESSION['id_etudiant'];             // id de l'étudiant
+    $message = $_POST['message_text']; // secure the text
+    $id_etudiant = $_SESSION['id_etudiant'];             // student id
     
     $sql = "INSERT INTO message_admin (id_etudiant, messag) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $id_etudiant, $message);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Message envoyé à l’administration !'); window.location='etu_messages.php';</script>";
+        echo "<script>alert('Message sent to the administration!'); window.location='etu_messages.php';</script>";
         exit();
     } else {
-        echo "Erreur : " . $conn->error;
+        echo "Error: " . $conn->error;
     }
 }
 
@@ -33,26 +33,26 @@ if (isset($_POST['send_message']) && !empty($_POST['message_text'])) {
 
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Étudiant - Bibliothèque Universitaire</title>
+  <title>Student Space - University Library</title>
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="etudiant_new_style.css">
 </head>
 <body>
 
 <header>
-  <h1>📚 Bibliothèque Universitaire</h1>
+  <h1>📚 University Library</h1>
   <nav>
     <ul>
       <li><a href="etu_catalogue.php" class="nav-link" class="menu-link <?php echo ($activePage=='catalogue') ? 'active' : ''; ?>">
      Catalogue</a></li>
       <li><a href="etu_emprunt.php" class="nav-link" class="menu-link <?php echo ($activePage=='emprunt') ? 'active' : ''; ?>">
-     Mes emprunts</a></li>
+     My Loans</a></li>
       <li><a href="etu_profil.php" class="nav-link" class="menu-link <?php echo ($activePage=='profil') ? 'active' : ''; ?>">
-     Profil</a></li>
+     Profile</a></li>
       <li><a href="etu_messages.php" class="nav-link" class="menu-link <?php echo ($activePage=='messages') ? 'active' : ''; ?>">
      Messages</a></li>
       <li><a href="etu_notification.php" class="nav-link" class="menu-link <?php echo ($activePage=='notification') ? 'active' : ''; ?>">
@@ -64,11 +64,11 @@ if (isset($_POST['send_message']) && !empty($_POST['message_text'])) {
 <main>
 
 <section id="messages">
-    <h2>Contacter l’administration</h2>
+    <h2>Contact the Administration</h2>
 
     <form method="POST" action="etu_messages.php">
-        <textarea name="message_text" placeholder="Votre message ici..." required></textarea>
-        <button type="submit" name="send_message">Envoyer</button>
+        <textarea name="message_text" placeholder="Your message here..." required></textarea>
+        <button type="submit" name="send_message">Send</button>
     </form>
 </section>
 
@@ -81,13 +81,13 @@ if (isset($_POST['send_message']) && !empty($_POST['message_text'])) {
 </style>
 
 <footer>
-  <p>© 2025 Bibliothèque Universitaire — Tous droits réservés</p>
+  <p>© 2025 University Library — All rights reserved</p>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // Toast simple
+  // Simple toast
   function toast(msg){ 
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -96,11 +96,11 @@ if (isset($_POST['send_message']) && !empty($_POST['message_text'])) {
   }
 
 
-  // Envoyer message
+  // Send message
   document.getElementById('sendMessage').addEventListener('click', ()=>{
     const txt = document.getElementById('messageText').value.trim();
-    if(!txt) return alert('Message vide');
-    toast('Message envoyé à l’administration !');
+    if(!txt) return alert('Empty message');
+    toast('Message sent to the administration!');
     document.getElementById('messageText').value='';
   });
 

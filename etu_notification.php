@@ -18,26 +18,26 @@ session_start();
 
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Étudiant - Bibliothèque Universitaire</title>
+  <title>Student Space - University Library</title>
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="etudiant_new_style.css">
 </head>
 <body>
 
 <header>
-  <h1>📚 Bibliothèque Universitaire</h1>
+  <h1>📚 University Library</h1>
   <nav>
     <ul>
       <li><a href="etu_catalogue.php" class="nav-link" class="menu-link <?php echo ($activePage=='catalogue') ? 'active' : ''; ?>">
      Catalogue</a></li>
       <li><a href="etu_emprunt.php" class="nav-link" class="menu-link <?php echo ($activePage=='emprunt') ? 'active' : ''; ?>">
-     Mes emprunts</a></li>
+     My Loans</a></li>
       <li><a href="etu_profil.php" class="nav-link" class="menu-link <?php echo ($activePage=='profil') ? 'active' : ''; ?>">
-     Profil</a></li>
+     Profile</a></li>
       <li><a href="etu_messages.php" class="nav-link" class="menu-link <?php echo ($activePage=='messages') ? 'active' : ''; ?>">
      Messages</a></li>
       <li><a href="etu_notification.php" class="nav-link" class="menu-link <?php echo ($activePage=='notification') ? 'active' : ''; ?>">
@@ -49,12 +49,12 @@ session_start();
 <main>
 
 <section id="notifications">
-    <h2>Mes notifications</h2>
+    <h2>My Notifications</h2>
     
     <?php
     $id_etudiant = $_SESSION['id_etudiant'];
 
-    // 1️⃣ Messages généraux (10 derniers)
+    // 1️⃣ General messages (last 10)
     $sql_general = "SELECT mess 
                     FROM message_etu 
                     WHERE id_etu IS NULL  
@@ -62,16 +62,16 @@ session_start();
     $result_general = $conn->query($sql_general);
 
     if ($result_general->num_rows > 0) {
-        echo "<h3>📢 Alertes générales</h3><ul>";
+        echo "<h3>📢 General Alerts</h3><ul>";
         while($row = $result_general->fetch_assoc()) {
             echo "<li>" . htmlspecialchars($row['mess'], ENT_QUOTES, 'UTF-8') . "</li>";
         }
         echo "</ul>";
     } else {
-        echo "<p>Aucune alerte pour le moment.</p>";
+        echo "<p>No alerts at the moment.</p>";
     }
 
-    // 2️⃣ Messages privés (10 derniers)
+    // 2️⃣ Private messages (last 10)
     $sql_private = "SELECT mess
                     FROM message_etu 
                     WHERE id_etu = ? 
@@ -82,13 +82,13 @@ session_start();
     $result_private = $stmt->get_result();
 
     if ($result_private->num_rows > 0) {
-        echo "<h3>✉ Messages privés</h3><ul>";
+        echo "<h3>✉ Private Messages</h3><ul>";
         while($row = $result_private->fetch_assoc()) {
             echo "<li>" . htmlspecialchars($row['mess'], ENT_QUOTES, 'UTF-8') . "</li>";
         }
         echo "</ul>";
     } else {
-        echo "<p>Aucun message privé pour le moment.</p>";
+        echo "<p>No private messages at the moment.</p>";
     }
     ?>
 </section>
@@ -101,13 +101,13 @@ session_start();
 </style>
 
 <footer>
-  <p>© 2025 Bibliothèque Universitaire — Tous droits réservés</p>
+  <p>© 2025 University Library — All rights reserved</p>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // Toast simple
+  // Simple toast
   function toast(msg){ 
     const t = document.getElementById('toast');
     t.textContent = msg;

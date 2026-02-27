@@ -34,16 +34,16 @@ if(isset($_POST['prolongerr'])) {
     $isbn = intval($_POST['isbn']);
     $id_etudiant = $_SESSION['id_etudiant'];
 
-    //envoyer un message à l'admin pour prolonger
+    // send a message to admin to extend
     $sql_msg = "INSERT INTO message_admin (id_etudiant, messag) VALUES (?, ?)";
-    $contenu = "Demande de prolongation pour le livre ISBN: $isbn";
+    $contenu = "Extension request for book ISBN: $isbn";
     $stmt_msg = $conn->prepare($sql_msg);
     $stmt_msg->bind_param("ss", $id_etudiant, $contenu);
     if ($stmt_msg->execute()) {
-        echo "<script>alert('Demande de prolongation envoyée !'); window.location='etu_emprunt.php';</script>";
+        echo "<script>alert('Extension request sent!'); window.location='etu_emprunt.php';</script>";
         exit();
     } else {
-        echo "Erreur lors de l'envoi de la demande : " . $conn->error;
+        echo "Error sending request: " . $conn->error;
     }
 }
 
@@ -54,26 +54,26 @@ if(isset($_POST['prolongerr'])) {
 
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Étudiant - Bibliothèque Universitaire</title>
+  <title>Student Space - University Library</title>
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="etudiant_new_style.css">
 </head>
 <body>
 
 <header>
-  <h1>📚 Bibliothèque Universitaire</h1>
+  <h1>📚 University Library</h1>
   <nav>
     <ul>
       <li><a href="etu_catalogue.php" class="nav-link" class="menu-link <?php echo ($activePage=='catalogue') ? 'active' : ''; ?>">
      Catalogue</a></li>
       <li><a href="etu_emprunt.php" class="nav-link" class="menu-link <?php echo ($activePage=='emprunt') ? 'active' : ''; ?>">
-     Mes emprunts</a></li>
+     My Loans</a></li>
       <li><a href="etu_profil.php" class="nav-link" class="menu-link <?php echo ($activePage=='profil') ? 'active' : ''; ?>">
-     Profil</a></li>
+     Profile</a></li>
       <li><a href="etu_messages.php" class="nav-link" class="menu-link <?php echo ($activePage=='messages') ? 'active' : ''; ?>">
      Messages</a></li>
       <li><a href="etu_notification.php" class="nav-link" class="menu-link <?php echo ($activePage=='notification') ? 'active' : ''; ?>">
@@ -85,14 +85,14 @@ if(isset($_POST['prolongerr'])) {
 <main>
 
 <section id="emprunts">
-    <h2>Mes emprunts</h2>
+    <h2>My Loans</h2>
 
     <table>
         <thead>
             <tr>
-                <th>Livre</th>
-                <th>Date d'emprunt</th>
-                <th>Date de retour</th>
+                <th>Book</th>
+                <th>Loan Date</th>
+                <th>Return Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -106,19 +106,19 @@ if(isset($_POST['prolongerr'])) {
                     <td><?php echo htmlspecialchars($emprunt['date_retour']); ?></td>
                     <td>
 
-                        <!-- PROLONGER -->
+                        <!-- EXTEND -->
                         <form method="POST" action="etu_emprunt.php" style="display:inline;">
                             <input type="hidden" name="isbn" value="<?php echo $emprunt['ISBN']; ?>">
                             <button type="submit" name="prolongerr" class="extend-btn">
-                                ⏳ Prolonger
+                                ⏳ Extend
                             </button>
                         </form>
 
-                        <!-- GÉNÉRER REÇU -->
+                        <!-- GENERATE RECEIPT -->
                         <form method="GET" action="recu_emprunt.php" style="display:inline;">
                             <input type="hidden" name="isbn" value="<?php echo $emprunt['ISBN']; ?>">
                             <button type="submit" class="pdf-btn">
-                                📄 Reçu
+                                📄 Receipt
                             </button>
                         </form>
 
@@ -128,7 +128,7 @@ if(isset($_POST['prolongerr'])) {
         <?php else: ?>
             <tr>
                 <td colspan="4" style="text-align:center;">
-                    Aucun emprunt en cours
+                    No active loans
                 </td>
             </tr>
         <?php endif; ?>
@@ -137,14 +137,14 @@ if(isset($_POST['prolongerr'])) {
     </table>
 </section>
 
-<!-- afficher les livres pour lesquels l'étudiant a fait une réservation -->
-        <h2>Reservations </h2>
+<!-- display books for which the student has made a reservation -->
+        <h2>Reservations</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Livre</th>
-                    <th>Date de réservation</th>
-                    <th>Statut</th>
+                    <th>Book</th>
+                    <th>Reservation Date</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -175,7 +175,7 @@ $result_reservations = $stmt_res->get_result();
             <?php else: ?>
                 <tr>
                     <td colspan="3" style="text-align:center;">
-                        Aucune réservation en cours
+                        No active reservations
                     </td>
                 </tr>
             <?php endif; ?>
@@ -183,13 +183,13 @@ $result_reservations = $stmt_res->get_result();
             </tbody>
         </table>
 
-            <!--Afficher les livres pour lesquels l'étudiant est sur la liste d'attente-->
-            <h2>Liste d'attente</h2>
+            <!-- Display books for which the student is on the waiting list -->
+            <h2>Waiting List</h2>
 <table>
     <thead>
         <tr>
-            <th>Livre</th>
-            <th>Position dans la file</th>
+            <th>Book</th>
+            <th>Position in queue</th>
         </tr>
     </thead>
     <tbody>
@@ -227,7 +227,7 @@ $result_reservations = $stmt_res->get_result();
     <?php else: ?>
         <tr>
             <td colspan="2" style="text-align:center;">
-                Aucun livre en liste d'attente
+                No books on waiting list
             </td>
         </tr>
     <?php endif; ?>
@@ -245,7 +245,7 @@ $result_reservations = $stmt_res->get_result();
     display: inline-block;
 }
 
-/* Style des tableaux */
+/* Table styles */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -256,7 +256,7 @@ table {
     margin-bottom: 40px;
 }
 
-/* En-tête du tableau */
+/* Table header */
 thead {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -271,7 +271,7 @@ thead tr th {
     letter-spacing: 0.5px;
 }
 
-/* Corps du tableau */
+/* Table body */
 tbody tr {
     border-bottom: 1px solid #e0e0e0;
     transition: all 0.3s ease;
@@ -293,7 +293,7 @@ tbody tr td {
     font-size: 0.95rem;
 }
 
-/* Alternance de couleurs pour les lignes */
+/* Alternating row colors */
 tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
@@ -302,12 +302,12 @@ tbody tr:nth-child(even):hover {
     background-color: #f0f0f0;
 }
 
-/* Style pour la colonne statut */
+/* Style for status column */
 tbody tr td:last-child {
     font-weight: 600;
 }
 
-/* Badges de statut */
+/* Status badges */
 tbody tr td:contains("en_attente"),
 tbody tr td[data-status="en_attente"] {
     color: #ff9800;
@@ -323,7 +323,7 @@ tbody tr td[data-status="refusé"] {
     color: #f44336;
 }
 
-/* Message "Aucune réservation" */
+/* "No reservations" message */
 tbody tr td[colspan] {
     text-align: center !important;
     color: #999;
@@ -331,7 +331,7 @@ tbody tr td[colspan] {
     padding: 30px 20px;
 }
 
-/* Style pour la position dans la file */
+/* Style for position in queue */
 tbody tr td:last-child {
     font-weight: bold;
     color: #667eea;
@@ -353,7 +353,7 @@ tbody tr td:last-child {
     }
 }
 
-/* Animation au chargement */
+/* Loading animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -375,18 +375,18 @@ table {
 </main>
 
 <style>
-    /* ===== GÉNÉRAL ===== */
+    /* ===== GENERAL ===== */
 
 </style>
 
 <footer>
-  <p>© 2025 Bibliothèque Universitaire — Tous droits réservés</p>
+  <p>© 2025 University Library — All rights reserved</p>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // Toast simple
+  // Simple toast
   function toast(msg){ 
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -395,13 +395,13 @@ table {
   }
 
 
-  // Prolonger emprunt
+  // Extend loan
   document.querySelectorAll('.extend-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>toast('Demande de prolongation envoyée'));
+    btn.addEventListener('click', ()=>toast('Extension request sent'));
   });
 
-  // Générer PDF (simulation)
-  document.getElementById('generatePDF').addEventListener('click', ()=>toast('PDF généré !'));
+  // Generate PDF (simulation)
+  document.getElementById('generatePDF').addEventListener('click', ()=>toast('PDF generated!'));
 </script>
 
 </body>

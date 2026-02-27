@@ -6,20 +6,20 @@ if (isset($_POST['vali'])) {
     $id_etu = $_POST['id_etu'];
     $isbn = intval($_POST['isbn']);
 
-    // Vérifier si l'étudiant a déjà emprunté ce livre
+    // Check if the student has already borrowed this book
     $sql0 = "SELECT COUNT(*) AS count_reserv FROM emprunt 
              WHERE ISBN=$isbn AND ID_etu='$id_etu' AND statue_empr='en_cours'";
     $result0 = $conn->query($sql0);
     $row0 = $result0->fetch_assoc();
 
-    // Si l'étudiant a déjà emprunté ce livre, bloquer
+    // If the student has already borrowed this book, block
     if ($row0['count_reserv'] > 0) {
-        echo "<script>alert('Erreur : L\\'étudiant a déjà emprunté ce livre !');
+        echo "<script>alert('Error: The student has already borrowed this book!');
               window.location='admin_reserv.php';</script>";
         exit();
     }
 
-    // Sinon, procéder à la validation
+    // Otherwise, proceed with validation
     $sql = "UPDATE reservation SET statut='validé' 
             WHERE ISBN=$isbn AND ID_etu='$id_etu' AND statut='en_attente'";
 
@@ -37,23 +37,23 @@ if (isset($_POST['vali'])) {
 
             if($conn->query($sql2) === TRUE){
                 $sql3 = "INSERT INTO message_etu (ID_etu, mess) 
-                         VALUES ('$id_etu', 'Votre réservation pour le livre (ISBN: $isbn) a été validée. Veuillez récupérer le livre dans les 2 jours.')";
+                         VALUES ('$id_etu', 'Your reservation for the book (ISBN: $isbn) has been validated. Please pick up the book within 2 days.')";
                 
                 if($conn->query($sql3) === TRUE){
-                    echo "<script>alert('Réservation validée avec succès !');
+                    echo "<script>alert('Reservation validated successfully!');
                           window.location='admin_reserv.php';</script>";
                     exit();
                 } else {
-                    echo "Erreur INSERT message_etu : " . $conn->error;
+                    echo "Error INSERT message_etu: " . $conn->error;
                 }
             } else {
-                echo "Erreur INSERT emprunt : " . $conn->error;
+                echo "Error INSERT emprunt: " . $conn->error;
             }
         } else {
-            echo "Erreur UPDATE livre : " . $conn->error;
+            echo "Error UPDATE livre: " . $conn->error;
         }
     } else {
-        echo "Erreur UPDATE reservation : " . $conn->error;
+        echo "Error UPDATE reservation: " . $conn->error;
     }
 }
 
@@ -63,29 +63,29 @@ if (isset($_POST['refus'])) {
 
     $sql="UPDATE reservation SET statut='refusé' WHERE ISBN=$isbn AND ID_etu='$id_etu' AND statut='en_attente'";
     if($conn->query($sql) === TRUE){
-        echo "<script>alert('Réservation refusée avec succès !');window.location='admin_reserv.php';</script>";
+        echo "<script>alert('Reservation rejected successfully!');window.location='admin_reserv.php';</script>";
         exit();
     } else {
-        echo "Erreur : " . $conn->error;
+        echo "Error: " . $conn->error;
     }
 }
 
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin - Bibliothèque Universitaire</title>
+  <title>Admin - University Library</title>
   <link rel="stylesheet" href="admin_style.css" />
   <link rel="stylesheet" href="admin_new_style.css">
 </head>
 <body>
   <header class="admin-header">
-    <h1>🔧 Espace Administrateur — Bibliothèque</h1>
+    <h1>🔧 Administrator Space — Library</h1>
     <div class="header-actions">
-      <button id="btnInventory">Statistiques</button>
+      <button id="btnInventory">Statistics</button>
     </div>
   </header>
 
@@ -93,28 +93,28 @@ if (isset($_POST['refus'])) {
     <aside class="sidebar">
       <ul>
         <li><a href="admin_livre.php" class="menu-link <?php echo ($activePage=='livres') ? 'active' : ''; ?>">
-     Livres (CRUD)</a></li>
+     Books (CRUD)</a></li>
         <li><a href="admin_etudiant.php" class="menu-link <?php echo ($activePage=='etudiants') ? 'active' : ''; ?>">
-     Étudiants (CRUD)</a></li>
+     Students (CRUD)</a></li>
         <li><a href="admin_reserv.php" class="menu-link <?php echo ($activePage=='reservation') ? 'active' : ''; ?>">
-     Réservations</a></li>
+     Reservations</a></li>
         <li><a href="admin_pret.php" class="menu-link <?php echo ($activePage=='pret') ? 'active' : ''; ?>">
-     Prêts</a></li>
+     Loans</a></li>
         <li><a href="admin_liste.php" class="menu-link <?php echo ($activePage=='liste') ? 'active' : ''; ?>">
-     Liste d'attente</a></li>
+     Waiting List</a></li>
         <li><a href="admin_messages.php" class="menu-link <?php echo ($activePage=='messages') ? 'active' : ''; ?>">
-     Alertes & Messages</a></li>
+     Alerts & Messages</a></li>
       </ul>
     </aside>
 
-    <!-- Section Réservations -->
+    <!-- Reservations Section -->
     <section id="panelReservations">
-      <h2>Réservations en attente</h2>
+      <h2>Pending Reservations</h2>
       <table class="table" id="reservationsTable">
         <thead>
           <tr>
-            <th>Etudiant</th>
-            <th>Livre</th>
+            <th>Student</th>
+            <th>Book</th>
             <th>Date</th>
             <th>Actions</th>
           </tr>
@@ -137,14 +137,14 @@ if (isset($_POST['refus'])) {
                         <form method='POST' action='admin_reserv.php' style='display:inline;'>
                             <input type='hidden' name='isbn' value='{$row['ISBN']}'>
                             <input type='hidden' name='id_etu' value='{$row['ID_etu']}'>
-                            <button type='submit' name='vali' title='Valider'>✅</button>
-                            <button type='submit' name='refus' title='Refuser'>❌</button>
+                            <button type='submit' name='vali' title='Validate'>✅</button>
+                            <button type='submit' name='refus' title='Reject'>❌</button>
                         </form>
                       </td>";
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='4'>Pas de demande de réservation.</td></tr>";
+            echo "<tr><td colspan='4'>No reservation requests.</td></tr>";
         }
         ?>
         </tbody>
@@ -161,7 +161,7 @@ if (isset($_POST['refus'])) {
   <div class="toast" id="toast"></div>
 
   <script>
-    // --- JS minimal pour interactions ---
+    // --- Minimal JS for interactions ---
     function toast(msg){ 
       const t = document.getElementById('toast');
       t.textContent = msg;
