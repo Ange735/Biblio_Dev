@@ -10,7 +10,7 @@ $sql = "SELECT DISTINCT la.ISBN, l.titre
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $books_with_waitlist[] = $row; // tableau avec ISBN et titre
+        $books_with_waitlist[] = $row; // array with ISBN and title
     }
 }
 
@@ -19,7 +19,7 @@ $students_waiting = [];
 $selected_title = '';
 
 if ($selected_isbn) {
-    // Récupérer les étudiants avec nom et prénom
+    // Get students with first and last name
     $sql = "SELECT la.ID_etu AS etudiant_id, e.nom, e.Prénom AS prenom, l.titre 
             FROM liste_att la
             JOIN étudiant e ON la.ID_etu = e.ID_etu
@@ -32,10 +32,10 @@ if ($selected_isbn) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $students_waiting[] = $row;
-            $selected_title = $row['titre']; // récupérer le titre pour l'affichage
+            $selected_title = $row['titre']; // get title for display
         }
     } else {
-        // Si aucun étudiant, récupérer quand même le titre
+        // If no students, still get the title
         $stmt2 = $conn->prepare("SELECT titre FROM livre WHERE ISBN = ?");
         $stmt2->bind_param("i", $selected_isbn);
         $stmt2->execute();
@@ -54,15 +54,15 @@ if ($selected_isbn) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin - Bibliothèque Universitaire</title>
+  <title>Admin - University Library</title>
   <link rel="stylesheet" href="admin_style.css" />
   <link rel="stylesheet" href="admin_new_style.css">
 </head>
 <body>
   <header class="admin-header">
-    <h1>🔧 Espace Administrateur — Bibliothèque</h1>
+    <h1>🔧 Admin Space — Library</h1>
     <div class="header-actions">
-      <button id="btnInventory">Statistiques</button>
+      <button id="btnInventory">Statistics</button>
     </div>
   </header>
 
@@ -70,17 +70,17 @@ if ($selected_isbn) {
     <aside class="sidebar">
       <ul>
         <li><a href="admin_livre.php" class="menu-link <?php echo ($activePage=='livres') ? 'active' : ''; ?>">
-     Livres (CRUD)</a></li>
+     Books (CRUD)</a></li>
         <li><a href="admin_etudiant.php" class="menu-link <?php echo ($activePage=='etudiants') ? 'active' : ''; ?>">
-     Étudiants (CRUD)</a></li>
+     Students (CRUD)</a></li>
         <li><a href="admin_reserv.php" class="menu-link <?php echo ($activePage=='reservation') ? 'active' : ''; ?>">
-     Réservations</a></li>
+     Reservations</a></li>
         <li><a href="admin_pret.php" class="menu-link <?php echo ($activePage=='pret') ? 'active' : ''; ?>">
-     Prêts</a></li>
+     Loans</a></li>
         <li><a href="admin_liste.php" class="menu-link <?php echo ($activePage=='liste') ? 'active' : ''; ?>">
-     Liste d'attente</a></li>
+     Waiting List</a></li>
         <li><a href="admin_messages.php" class="menu-link <?php echo ($activePage=='messages') ? 'active' : ''; ?>">
-     Alertes & Messages</a></li>
+     Alerts & Messages</a></li>
     </aside>
 
 
@@ -89,13 +89,13 @@ if ($selected_isbn) {
 
 
 <section id="panelWaitlist" >
-    <h2>Liste d'attente (par livre)</h2>
+    <h2>Waiting List (by book)</h2>
 
-    <!-- Sélecteur de livres -->
-    <label for="isbn">Choisir un livre :</label>
+    <!-- Book selector -->
+    <label for="isbn">Choose a book:</label>
     <form method="POST" action="#panelWaitlist">
         <select name="isbn" id="isbn" onchange="this.form.submit()">
-            <option value="">--Sélectionnez--</option>
+            <option value="">--Select--</option>
             <?php foreach ($books_with_waitlist as $book): ?>
                 <option value="<?= $book['ISBN'] ?>" <?= ($selected_isbn == $book['ISBN']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($book['titre'] . " (" . $book['ISBN'] . ")") ?>
@@ -104,17 +104,17 @@ if ($selected_isbn) {
         </select>
     </form>
 
-    <!-- Affichage de la table des étudiants -->
+    <!-- Display student table -->
     <?php if ($selected_isbn): ?>
-        <h3>Liste d'attente pour le livre <?= htmlspecialchars($selected_title . " (" . $selected_isbn . ")") ?> :</h3>
+        <h3>Waiting list for book <?= htmlspecialchars($selected_title . " (" . $selected_isbn . ")") ?> :</h3>
 
         <?php if (!empty($students_waiting)): ?>
             <table class="waitlist-table">
                 <thead>
                     <tr>
-                        <th>ID Étudiant</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
+                        <th>Student ID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,7 +128,7 @@ if ($selected_isbn) {
                 </tbody>
             </table>
         <?php else: ?>
-            <p>Aucun étudiant en liste d'attente pour ce livre.</p>
+            <p>No students on waiting list for this book.</p>
         <?php endif; ?>
     <?php endif; ?>
 </section>
@@ -160,7 +160,7 @@ if ($selected_isbn) {
     <div class="toast" id="toast"></div>
 
   <script>
-    // --- JS minimal pour interactions ---
+    // --- Minimal JS for interactions ---
     function toast(msg){ 
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -182,13 +182,13 @@ if ($selected_isbn) {
 
     document.getElementById('sendAlertBtn').addEventListener('click', ()=>{
       const text = document.getElementById('alertText').value.trim();
-      if(!text){ alert('Texte vide'); return;}
+      if(!text){ alert('Empty text'); return;}
       const studentSelect = document.getElementById('alertStudentSelect');
       const id = studentSelect.value;
       const name = studentSelect.options[studentSelect.selectedIndex].text;
       const ul = document.getElementById('alertsList');
-      ul.insertAdjacentHTML('afterbegin', `<li>${id? 'Alerte à '+name : 'Alerte globale'}: ${text}</li>`);
-      toast('Alerte envoyée');
+      ul.insertAdjacentHTML('afterbegin', `<li>${id? 'Alert to '+name : 'Global alert'}: ${text}</li>`);
+      toast('Alert sent');
       document.getElementById('alertText').value='';
     });
   </script>

@@ -1,81 +1,81 @@
 <?php
 include 'config2.php';
 
-// Vérifier que l'admin est connecté
+// Check if admin is logged in
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Administrateur</title>
+    <title>Administrator Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
     <link rel="stylesheet" href="style2.css">
     <link rel="stylesheet" href="admin_new_style.css">
 </head>
 <body>
 <header>
-    <h1>📊 Dashboard Administrateur</h1>
+    <h1>📊 Administrator Dashboard</h1>
     <nav>
-        <a href="admin_livre.php">Retour à l'administration</a>
+        <a href="admin_livre.php">Back to administration</a>
     </nav>
 </header>
 <main>
 
 <section>
-    <h2>Statistiques générales</h2>
+    <h2>General Statistics</h2>
     <div>
         <?php
-        // Livre le mieux noté
+        // Best rated book
         $top_book = $conn->query("SELECT titre, note FROM livre ORDER BY note DESC LIMIT 1")->fetch_assoc();
-        echo "<p>📚 Livre le mieux noté : " . htmlspecialchars($top_book['titre']) . " (" . round($top_book['note'],1) . "/5)</p>";
+        echo "<p>📚 Best rated book: " . htmlspecialchars($top_book['titre']) . " (" . round($top_book['note'],1) . "/5)</p>";
 
-        // Livre le plus emprunté
+        // Most borrowed book
         $most_borrowed = $conn->query("SELECT l.titre, COUNT(e.ISBN) AS total_emprunts 
                                        FROM emprunt e 
                                        JOIN livre l ON e.ISBN = l.ISBN 
                                        GROUP BY e.ISBN 
                                        ORDER BY total_emprunts DESC 
                                        LIMIT 1")->fetch_assoc();
-        echo "<p>📖 Livre le plus emprunté : " . htmlspecialchars($most_borrowed['titre']) . " (" . $most_borrowed['total_emprunts'] . " emprunts)</p>";
+        echo "<p>📖 Most borrowed book: " . htmlspecialchars($most_borrowed['titre']) . " (" . $most_borrowed['total_emprunts'] . " loans)</p>";
 
-        // Étudiant avec le plus de pénalités
+        // Student with most penalties
         $top_penalty = $conn->query("SELECT nom, Prénom, nbr_retard FROM étudiant ORDER BY nbr_retard DESC LIMIT 1")->fetch_assoc();
-        echo "<p>👤 Étudiant avec le plus de pénalités : " . htmlspecialchars($top_penalty['nom'] . " " . $top_penalty['Prénom']) . " (" . $top_penalty['nbr_retard'] . ")</p>";
+        echo "<p>👤 Student with most penalties: " . htmlspecialchars($top_penalty['nom'] . " " . $top_penalty['Prénom']) . " (" . $top_penalty['nbr_retard'] . ")</p>";
 
-        // Étudiant qui emprunte le plus
+        // Student who borrows the most
         $top_borrower = $conn->query("SELECT e.nom, e.Prénom, COUNT(em.ISBN) AS total_emprunts 
                                       FROM emprunt em 
                                       JOIN étudiant e ON em.ID_etu = e.ID_etu 
                                       GROUP BY em.ID_etu 
                                       ORDER BY total_emprunts DESC 
                                       LIMIT 1")->fetch_assoc();
-        echo "<p>👤 Étudiant qui emprunte le plus : " . htmlspecialchars($top_borrower['nom'] . " " . $top_borrower['Prénom']) . " (" . $top_borrower['total_emprunts'] . " livres)</p>";
+        echo "<p>👤 Student who borrows the most: " . htmlspecialchars($top_borrower['nom'] . " " . $top_borrower['Prénom']) . " (" . $top_borrower['total_emprunts'] . " books)</p>";
 
-        // Nombre total de livres
+        // Total number of books
         $total_books = $conn->query("SELECT COUNT(*) as total FROM livre")->fetch_assoc();
-        echo "<p>📘 Nombre total de livres : " . $total_books['total'] . "</p>";
+        echo "<p>📘 Total number of books: " . $total_books['total'] . "</p>";
 
-        // Nombre total d'étudiants
+        // Total number of students
         $total_students = $conn->query("SELECT COUNT(*) as total FROM étudiant")->fetch_assoc();
-        echo "<p>👨‍🎓 Nombre total d'étudiants : " . $total_students['total'] . "</p>";
+        echo "<p>👨‍🎓 Total number of students: " . $total_students['total'] . "</p>";
 
-        // Réservations en attente
+        // Pending reservations
         $pending_reservations = $conn->query("SELECT COUNT(*) as total FROM reservation WHERE statut='en_attente'")->fetch_assoc();
-        echo "<p>⏳ Réservations en attente : " . $pending_reservations['total'] . "</p>";
+        echo "<p>⏳ Pending reservations: " . $pending_reservations['total'] . "</p>";
         ?>
     </div>
 </section>
 
 <section>
-    <h2>Graphiques</h2>
+    <h2>Charts</h2>
     <canvas id="bookStatsChart" width="400" height="200"></canvas>
     <canvas id="studentStatsChart" width="400" height="200"></canvas>
     <canvas id="topRatedBooksChart" width="400" height="200"></canvas>
 </section>
 
 <script>
-// Top 5 livres les plus empruntés
+// Top 5 most borrowed books
 <?php
 $books_chart = $conn->query("SELECT l.titre, COUNT(e.ISBN) AS total_emprunts 
                              FROM emprunt e 
@@ -96,7 +96,7 @@ new Chart(document.getElementById('bookStatsChart').getContext('2d'), {
     data: {
         labels: <?php echo json_encode($books_labels); ?>,
         datasets: [{
-            label: 'Nombre d\'emprunts',
+            label: 'Number of loans',
             data: <?php echo json_encode($books_data); ?>,
             backgroundColor: 'rgba(54, 162, 235, 0.6)',
             borderColor: 'rgba(54, 162, 235, 1)',
@@ -106,7 +106,7 @@ new Chart(document.getElementById('bookStatsChart').getContext('2d'), {
     options: { responsive: true, scales: { y: { beginAtZero: true } } }
 });
 
-// Top 5 étudiants avec le plus d'emprunts
+// Top 5 students with most loans
 <?php
 $students_chart = $conn->query("SELECT e.nom, e.Prénom, COUNT(em.ISBN) AS total_emprunts 
                                 FROM emprunt em 
@@ -127,7 +127,7 @@ new Chart(document.getElementById('studentStatsChart').getContext('2d'), {
     data: {
         labels: <?php echo json_encode($students_labels); ?>,
         datasets: [{
-            label: 'Nombre d\'emprunts',
+            label: 'Number of loans',
             data: <?php echo json_encode($students_data); ?>,
             backgroundColor: 'rgba(255, 99, 132, 0.6)',
             borderColor: 'rgba(255, 99, 132, 1)',
@@ -137,7 +137,7 @@ new Chart(document.getElementById('studentStatsChart').getContext('2d'), {
     options: { responsive: true, scales: { y: { beginAtZero: true } } }
 });
 
-// Top 5 livres les mieux notés
+// Top 5 best rated books
 <?php
 $top_rated_books = $conn->query("SELECT titre, note FROM livre ORDER BY note DESC LIMIT 5");
 $top_rated_labels = $top_rated_data = [];
@@ -152,7 +152,7 @@ new Chart(document.getElementById('topRatedBooksChart').getContext('2d'), {
     data: {
         labels: <?php echo json_encode($top_rated_labels); ?>,
         datasets: [{
-            label: 'Note moyenne',
+            label: 'Average rating',
             data: <?php echo json_encode($top_rated_data); ?>,
             backgroundColor: 'rgba(75, 192, 192, 0.6)',
             borderColor: 'rgba(75, 192, 192, 1)',
