@@ -1,54 +1,70 @@
-# Biblio_Dev
-Dépot pour un projet  de gestion de bibliothèque
-#Setup
+# Biblio_Dev : gestion d'une bibliothèque universitaire
 
-Pour exécuter le code vous devez obligatoirement cloner ce depot github
-Ensuite vous placer le dossier cloner dans votre dossier xampp/htdocs
-Une fois le ficher bien placer, vous vous assurez d'exécuter le code de la base de donnée( veuillez lire le code de la base de donnée et exécuter bloc par bloc pour ne pas creer et supprimer la base de donnée en même temps par ce que j'ai mis des instructions qui ne servent pas dans la creation de la base de donnée, c'était juste pour des test)
-A noter qu'il ya 2 bases de donnes donc vous devez les exécuter tous les 2, de preference dans mysql workbench
-ensuite vous vous render dans votre navigateur, vous taper : localhost/chemin_de_votre_dossier/nom_ficher_a_exécuter.php
-Si en ouvrant par exemple la page index.php et que on vous demande de vous connecter vous pouvez juste aller sur workbench et regarder les mails et mots de passes utiliser pour vous connecter avec l'instruction : select * from étudiant pour la page étudiant 📚 Biblio_Dev
+Application web de gestion d'une bibliothèque universitaire, avec un espace étudiant (catalogue, réservations, emprunts) et un espace administrateur (livres, étudiants, prêts, statistiques). Projet académique réalisé à l'ENSAM Meknès.
 
-Dépôt pour un projet de gestion de bibliothèque.
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=chartdotjs&logoColor=white)
+![FPDF](https://img.shields.io/badge/FPDF-reçus%20PDF-555555?style=flat-square)
 
-⚙️ Installation & Configuration (Setup)
+## Fonctionnalités
 
-Pour exécuter ce projet, veuillez suivre les étapes ci-dessous :
+### Espace étudiant
 
-Cloner le dépôt GitHub
+- Inscription et connexion.
+- Recherche dans le catalogue.
+- Réservation d'un livre disponible, ou inscription sur la liste d'attente s'il est déjà emprunté.
+- Suivi de ses emprunts, réservations et listes d'attente.
+- Téléchargement d'un **reçu d'emprunt en PDF**.
+- Notifications et messagerie avec l'administration.
 
-git clone <lien_du_depot>
+### Espace administrateur
 
-Déplacer le dossier cloné dans le répertoire :
+- Gestion des livres (ajout avec photo de couverture, modification, suppression) et des étudiants.
+- Validation des réservations : la validation crée l'emprunt et prévient l'étudiant par message.
+- Suivi des prêts et des retours. Chaque retard est comptabilisé et **le compte est bloqué automatiquement à partir de 3 retards**.
+- Consultation des listes d'attente par livre.
+- Tableau de bord avec statistiques générales et graphiques (Chart.js).
+- Messagerie avec les étudiants.
 
-xampp/htdocs
+## Structure
 
-Configurer la base de données
+```
+├── index.php               # connexion et inscription étudiant
+├── etu_*.php               # espace étudiant (catalogue, emprunts, profil, messages, notifications)
+├── admin_login.php         # connexion administrateur
+├── admin_*.php             # espace administrateur (tableau de bord, livres, étudiants, prêts, réservations...)
+├── recu_emprunt.php        # génération du reçu PDF (FPDF)
+├── config1.php, config2.php  # connexions aux deux bases MySQL
+├── gestion_admin.sql       # base des administrateurs
+├── gestion_bibliothèque.sql  # base de la bibliothèque
+├── fichier/                # couvertures des livres
+└── fpdf/                   # bibliothèque FPDF
+```
 
-Exécutez le script SQL fourni.
+## Installation (XAMPP ou WAMP)
 
-⚠️ Important : Lisez attentivement le fichier SQL et exécutez les requêtes bloc par bloc, car certaines instructions sont uniquement destinées à des tests et ne sont pas nécessaires à la création de la base de données.
+1. Cloner le dépôt dans `htdocs` (XAMPP) ou `www` (WAMP) :
+   ```bash
+   git clone https://github.com/Ange735/Biblio_Dev.git
+   ```
+2. Créer les **deux** bases de données avec MySQL Workbench ou phpMyAdmin : `gestion_admin.sql`, puis `gestion_bibliothèque.sql`.
+   > Les scripts contiennent aussi des requêtes de test (`DROP`, `SELECT`). Exécute-les bloc par bloc et ignore les `DROP DATABASE` / `DROP TABLE`.
+3. Si ton MySQL a un mot de passe, le renseigner dans `config1.php` et `config2.php`.
+4. Ouvrir `http://localhost/Biblio_Dev/index.php` (espace étudiant) ou `http://localhost/Biblio_Dev/admin_login.php` (espace administrateur).
 
-Il existe deux bases de données, vous devez donc exécuter les deux scripts.
+Pour te connecter, crée un compte étudiant depuis la page d'inscription. Pour l'espace administrateur, `gestion_admin.sql` crée un compte de démonstration (identifiant `AD_1`, mot de passe dans le script).
 
-Il est recommandé d’utiliser MySQL Workbench.
+## Limites connues et améliorations prévues
 
-Lancer le projet dans le navigateur
+Projet pédagogique, pas destiné à la production en l'état :
 
-Ouvrez votre navigateur et tapez :
+- Les mots de passe sont stockés en clair : à remplacer par `password_hash` et `password_verify`.
+- Plusieurs requêtes SQL concatènent les saisies utilisateur : à passer en requêtes préparées pour supprimer les risques d'injection SQL.
+- Les scripts SQL mélangent création et tests : à séparer en un script d'installation propre.
 
-localhost/chemin_du_dossier/nom_du_fichier.php
+## Équipe
 
-Exemple :
-
-localhost/Biblio_Dev/index.php
-
-Connexion au système
-
-Si une page de connexion apparaît (ex : index.php), vous pouvez récupérer les identifiants de connexion dans la base de données.
-
-Pour la page étudiant, utilisez la requête suivante dans MySQL Workbench :
-
-SELECT * FROM etudiant;
-
-Vous y trouverez les emails et mots de passe nécessaires pour vous connecter. si vous ne trouvez rien vous n'avez juste qu'a inserer votre propre utilisateur et vous connecter !
+- **Ange Bado** · [GitHub](https://github.com/Ange735) · [LinkedIn](https://www.linkedin.com/in/ange-bado)
+- **issougmehdi75-alt** · [GitHub](https://github.com/issougmehdi75-alt)
